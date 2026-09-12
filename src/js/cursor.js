@@ -31,7 +31,8 @@ export function initCursor() {
     ring.style.opacity = '0';
   });
 
-  const interactive = 'a, button, input, .chip, [data-tilt], .project-card, #reflex-box';
+  const interactive =
+    'a, button, input, .chip, .research-chip, .theme-btn, .polaroid, [data-tilt], .project-card, #reflex-box';
   document.addEventListener('mouseover', (e) => {
     ring.classList.toggle('grow', !!e.target.closest(interactive));
   });

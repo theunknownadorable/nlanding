@@ -3,11 +3,11 @@
 const BEST_KEY = 'nlanding-reflex-best';
 
 function rank(ms) {
-  if (ms < 200) return 'cybernetically enhanced ⚡';
-  if (ms < 280) return 'pro-gamer reflexes 🎯';
-  if (ms < 380) return 'solid human ✅';
+  if (ms < 200) return 'reflexes, peer-reviewed ⚡';
+  if (ms < 280) return 'tenure-track speed 🎯';
+  if (ms < 380) return 'solid — duly cited ✅';
   if (ms < 550) return 'powered by decaf ☕';
-  return 'did you fall asleep? 😴';
+  return 'asleep in the back row? 😴';
 }
 
 export function initReflex() {

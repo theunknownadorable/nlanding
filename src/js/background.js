@@ -1,246 +1,296 @@
-// Living neural-network background: layered nodes that flinch from the
-// cursor, travelling pulses, drifting star dust, and the occasional comet.
-// Evolved from portfolio v1's canvas.
+// v2.1 · Fluid background.
+//
+// Replaces the v2.0 neural net with slow ink-in-water: four-to-five large
+// radial-gradient blobs drifting in the theme's colours, pushed aside by the
+// cursor, a fading particle wake trailing the pointer, expanding rings on
+// click, and a thin layer of floating dust.
+//
+// Blobs are drawn from cached offscreen sprites (one per colour) rather than
+// building gradients every frame — the theme changes rarely, the frame loop
+// does not.
 
-import { getCurrentTheme, hexToRgb } from './theme.js';
+import { getCurrentTheme } from './theme.js';
 
 const reducedMotion =
   typeof matchMedia !== 'undefined' &&
   matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+const BLOB_COUNT = 5;
+const SPRITE_SIZE = 256;
+const spriteCache = new Map();
+let cachedThemeKey = null;
+
+/** Soft radial falloff sprite for a given [r,g,b]. */
+function spriteFor(rgb) {
+  const key = rgb.join(',');
+  let canvas = spriteCache.get(key);
+  if (canvas) return canvas;
+
+  canvas = document.createElement('canvas');
+  canvas.width = canvas.height = SPRITE_SIZE;
+  const c = canvas.getContext('2d');
+  const half = SPRITE_SIZE / 2;
+  const g = c.createRadialGradient(half, half, 0, half, half, half);
+  const [r, gr, b] = rgb;
+  g.addColorStop(0, `rgba(${r},${gr},${b},1)`);
+  g.addColorStop(0.35, `rgba(${r},${gr},${b},0.62)`);
+  g.addColorStop(0.68, `rgba(${r},${gr},${b},0.2)`);
+  g.addColorStop(1, `rgba(${r},${gr},${b},0)`);
+  c.fillStyle = g;
+  c.fillRect(0, 0, SPRITE_SIZE, SPRITE_SIZE);
+
+  // Sprites are keyed by colour, so a theme switch simply adds new entries.
+  if (spriteCache.size > 24) spriteCache.clear();
+  spriteCache.set(key, canvas);
+  return canvas;
+}
 
 export function initBackground() {
   const canvas = document.getElementById('bg-canvas');
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
 
-  let W = 0,
-    H = 0,
-    layers = [],
-    pulses = [],
-    stars = [],
-    comets = [];
-  const layerConfig = [6, 9, 9, 4];
-  const mouse = { x: -2000, y: -2000 };
+  let W = 0;
+  let H = 0;
+  let dpr = 1;
+  let blobs = [];
+  let dust = [];
+  let wake = [];
+  let ripples = [];
 
-  window.addEventListener('mousemove', (e) => {
-    mouse.x = e.clientX;
-    mouse.y = e.clientY;
-  });
-  window.addEventListener('mouseleave', () => {
-    mouse.x = -2000;
-    mouse.y = -2000;
-  });
+  const mouse = { x: -9999, y: -9999, active: false };
 
-  class Node {
-    constructor(x, y) {
-      this.x = x;
-      this.y = y;
-      this.bx = x;
-      this.by = y;
-      this.intensity = 0;
-      this.phase = Math.random() * Math.PI * 2;
-    }
-    update(t) {
-      // gentle idle drift
-      const dx0 = Math.sin(t / 1600 + this.phase) * 6;
-      const dy0 = Math.cos(t / 2000 + this.phase) * 6;
-      this.x += (this.bx + dx0 - this.x) * 0.08;
-      this.y += (this.by + dy0 - this.y) * 0.08;
-      const dx = mouse.x - this.x;
-      const dy = mouse.y - this.y;
-      const dist = Math.hypot(dx, dy);
-      if (dist < 170) {
-        const angle = Math.atan2(dy, dx);
-        const force = (170 - dist) / 170;
-        this.x -= Math.cos(angle) * force * 12;
-        this.y -= Math.sin(angle) * force * 12;
-        this.intensity = Math.min(this.intensity + 0.12, 1);
-      } else {
-        this.intensity = Math.max(this.intensity - 0.02, 0);
-      }
-    }
-    draw(theme) {
-      let r, g, b;
-      if (theme.primary.startsWith('#')) {
-        [r, g, b] = hexToRgb(theme.primary);
-      } else {
-        // party mode hands us hsl() — canvas accepts it for fills, and we
-        // fake the alpha by drawing twice.
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, 3.2 + this.intensity * 3, 0, Math.PI * 2);
-        ctx.fillStyle = theme.primary;
-        ctx.globalAlpha = 0.35 + this.intensity * 0.65;
-        ctx.fill();
-        ctx.globalAlpha = 1;
-        return;
-      }
-      ctx.beginPath();
-      ctx.arc(this.x, this.y, 3.2 + this.intensity * 3, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(${r},${g},${b},${0.3 + this.intensity * 0.7})`;
-      ctx.fill();
-      if (this.intensity > 0.4) {
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, 9 + this.intensity * 8, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(${r},${g},${b},${0.08 * this.intensity})`;
-        ctx.fill();
-      }
-    }
+  function resize() {
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    W = window.innerWidth;
+    H = window.innerHeight;
+    canvas.width = Math.floor(W * dpr);
+    canvas.height = Math.floor(H * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    seed();
   }
 
-  class Pulse {
-    constructor(a, b) {
-      this.a = a;
-      this.b = b;
-      this.p = 0;
-      this.speed = 0.02 + Math.random() * 0.025;
-      this.active = true;
-    }
-    update() {
-      this.p += this.speed;
-      if (this.p >= 1) {
-        this.active = false;
-        this.b.intensity = 1;
-      }
-    }
-    draw(theme) {
-      const x = this.a.x + (this.b.x - this.a.x) * this.p;
-      const y = this.a.y + (this.b.y - this.a.y) * this.p;
-      ctx.beginPath();
-      ctx.arc(x, y, 2.2, 0, Math.PI * 2);
-      ctx.fillStyle = theme.pulse;
-      ctx.shadowColor = theme.pulse;
-      ctx.shadowBlur = 8;
-      ctx.fill();
-      ctx.shadowBlur = 0;
-    }
-  }
-
-  function init() {
-    W = canvas.width = window.innerWidth;
-    H = canvas.height = window.innerHeight;
-    layers = [];
-    pulses = [];
-    stars = [];
-    layerConfig.forEach((count, i) => {
-      const col = [];
-      for (let j = 0; j < count; j++) {
-        col.push(
-          new Node(
-            (W / (layerConfig.length + 1)) * (i + 1),
-            (H / (count + 1)) * (j + 1)
-          )
-        );
-      }
-      layers.push(col);
+  function seed() {
+    const base = Math.max(W, H);
+    blobs = Array.from({ length: BLOB_COUNT }, (_, i) => ({
+      // Spread the anchors so the page never pools in one corner.
+      bx: W * (0.16 + 0.17 * i) + (i % 2 ? W * 0.05 : 0),
+      by: H * (i % 2 === 0 ? 0.24 : 0.7),
+      x: 0,
+      y: 0,
+      r: base * (0.26 + 0.05 * (i % 3)),
+      phase: (i / BLOB_COUNT) * Math.PI * 2,
+      driftX: 26 + i * 9,
+      driftY: 20 + i * 7,
+      periodX: 15000 + i * 2600,
+      periodY: 19000 + i * 2200,
+      alpha: 0.72 + 0.07 * (i % 3),
+    }));
+    blobs.forEach((b) => {
+      b.x = b.bx;
+      b.y = b.by;
     });
-    const starCount = Math.min(130, Math.floor((W * H) / 14000));
-    for (let i = 0; i < starCount; i++) {
-      stars.push({
-        x: Math.random() * W,
-        y: Math.random() * H,
-        r: Math.random() * 1.4 + 0.3,
-        phase: Math.random() * Math.PI * 2,
-        speed: 0.4 + Math.random() * 1.2,
-      });
-    }
+
+    const dustCount = Math.min(90, Math.floor((W * H) / 16000));
+    dust = Array.from({ length: dustCount }, () => ({
+      x: Math.random() * W,
+      y: Math.random() * H,
+      r: Math.random() * 1.5 + 0.35,
+      vx: (Math.random() - 0.5) * 0.16,
+      vy: -(0.05 + Math.random() * 0.22),
+      phase: Math.random() * Math.PI * 2,
+    }));
   }
 
-  function drawStars(t, theme) {
-    ctx.fillStyle = theme.node;
-    for (const s of stars) {
-      s.y -= s.speed * 0.15;
-      if (s.y < -4) {
-        s.y = H + 4;
-        s.x = Math.random() * W;
+  /* ---------------- pointer plumbing ---------------- */
+
+  window.addEventListener(
+    'mousemove',
+    (e) => {
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+      mouse.active = true;
+      if (reducedMotion) return;
+      spawnWake(e.clientX, e.clientY);
+    },
+    { passive: true }
+  );
+
+  window.addEventListener('mouseleave', () => {
+    mouse.x = -9999;
+    mouse.y = -9999;
+    mouse.active = false;
+  });
+
+  // Ripples everywhere *except* on interactive elements — clicking a link
+  // should feel like clicking a link, not like poking the wallpaper.
+  const IGNORE =
+    'a, button, input, textarea, select, label, summary, [role="button"], [role="link"], .brain-trigger, #reflex-box';
+  window.addEventListener(
+    'pointerdown',
+    (e) => {
+      if (reducedMotion) return;
+      if (e.target instanceof Element && e.target.closest(IGNORE)) return;
+      ripples.push({ x: e.clientX, y: e.clientY, r: 4, life: 1 });
+      if (ripples.length > 14) ripples.shift();
+    },
+    { passive: true }
+  );
+
+  let lastWake = 0;
+  function spawnWake(x, y) {
+    const now = performance.now();
+    if (now - lastWake < 22) return; // ~45 particles/sec at most
+    lastWake = now;
+    wake.push({
+      x: x + (Math.random() - 0.5) * 7,
+      y: y + (Math.random() - 0.5) * 7,
+      vx: (Math.random() - 0.5) * 0.55,
+      vy: (Math.random() - 0.5) * 0.55 - 0.12,
+      r: 1 + Math.random() * 2.3,
+      life: 1,
+      decay: 0.018 + Math.random() * 0.022,
+      tone: Math.random() < 0.5 ? 'primary' : 'secondary',
+    });
+    if (wake.length > 190) wake.splice(0, wake.length - 190);
+  }
+
+  /* ---------------- drawing ---------------- */
+
+  function drawBlobs(t, theme) {
+    if (theme.key !== cachedThemeKey) {
+      cachedThemeKey = theme.key;
+    }
+    ctx.globalCompositeOperation = theme.blobComposite;
+
+    blobs.forEach((b, i) => {
+      // Idle drift.
+      const tx =
+        b.bx + Math.sin(t / b.periodX + b.phase) * b.driftX + Math.cos(t / (b.periodY * 1.7)) * 12;
+      const ty =
+        b.by + Math.cos(t / b.periodY + b.phase) * b.driftY + Math.sin(t / (b.periodX * 1.3)) * 10;
+      b.x += (tx - b.x) * 0.045;
+      b.y += (ty - b.y) * 0.045;
+
+      // Cursor repulsion — the fluid parts around the pointer.
+      if (mouse.active) {
+        const dx = b.x - mouse.x;
+        const dy = b.y - mouse.y;
+        const dist = Math.hypot(dx, dy);
+        const reach = b.r * 0.85;
+        if (dist < reach && dist > 0.01) {
+          const force = ((reach - dist) / reach) ** 1.6;
+          b.x += (dx / dist) * force * 34;
+          b.y += (dy / dist) * force * 34;
+        }
       }
-      const tw = 0.35 + 0.65 * Math.abs(Math.sin(t / 900 + s.phase));
-      ctx.globalAlpha = tw * 0.8;
+
+      const rgb = theme.blobRgb[i % theme.blobRgb.length];
+      const sprite = spriteFor(rgb);
+      ctx.globalAlpha = theme.blobAlpha * b.alpha;
+      const size = b.r * 2;
+      ctx.drawImage(sprite, b.x - b.r, b.y - b.r, size, size);
+    });
+
+    ctx.globalAlpha = 1;
+    ctx.globalCompositeOperation = 'source-over';
+  }
+
+  function drawDust(t, theme) {
+    const [r, g, b] = theme.light ? theme.inkRgb : theme.inkRgb;
+    for (const d of dust) {
+      if (!reducedMotion) {
+        d.x += d.vx + Math.sin(t / 2600 + d.phase) * 0.12;
+        d.y += d.vy;
+        if (d.y < -6) {
+          d.y = H + 6;
+          d.x = Math.random() * W;
+        }
+        if (d.x < -6) d.x = W + 6;
+        if (d.x > W + 6) d.x = -6;
+      }
+      const tw = 0.3 + 0.7 * Math.abs(Math.sin(t / 1400 + d.phase));
+      ctx.globalAlpha = (theme.light ? 0.3 : 0.42) * tw;
+      ctx.fillStyle = `rgb(${r},${g},${b})`;
       ctx.beginPath();
-      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
       ctx.fill();
     }
     ctx.globalAlpha = 1;
   }
 
-  function maybeSpawnComet() {
-    if (comets.length === 0 && Math.random() < 0.0035) {
-      const fromLeft = Math.random() < 0.5;
-      comets.push({
-        x: fromLeft ? -40 : W + 40,
-        y: Math.random() * H * 0.4,
-        vx: (fromLeft ? 1 : -1) * (7 + Math.random() * 4),
-        vy: 2 + Math.random() * 1.5,
-        life: 1,
-      });
+  function drawWake(theme) {
+    for (let i = wake.length - 1; i >= 0; i--) {
+      const p = wake[i];
+      p.x += p.vx;
+      p.y += p.vy;
+      p.vy -= 0.004; // faint rise, like ink in water
+      p.life -= p.decay;
+      if (p.life <= 0) {
+        wake.splice(i, 1);
+        continue;
+      }
+      const rgb = p.tone === 'primary' ? theme.primaryRgb : theme.secondaryRgb;
+      ctx.globalAlpha = p.life * (theme.light ? 0.42 : 0.6);
+      ctx.fillStyle = `rgb(${rgb[0]},${rgb[1]},${rgb[2]})`;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r * p.life, 0, Math.PI * 2);
+      ctx.fill();
     }
+    ctx.globalAlpha = 1;
   }
 
-  function drawComets(theme) {
-    comets = comets.filter((c) => c.x > -120 && c.x < W + 120 && c.y < H + 120);
-    for (const c of comets) {
-      c.x += c.vx;
-      c.y += c.vy;
-      const grad = ctx.createLinearGradient(c.x, c.y, c.x - c.vx * 12, c.y - c.vy * 12);
-      grad.addColorStop(0, theme.primary);
-      grad.addColorStop(1, 'transparent');
-      ctx.strokeStyle = grad;
-      ctx.lineWidth = 2;
+  function drawRipples(theme) {
+    for (let i = ripples.length - 1; i >= 0; i--) {
+      const rp = ripples[i];
+      rp.r += 5.2;
+      rp.life -= 0.022;
+      if (rp.life <= 0) {
+        ripples.splice(i, 1);
+        continue;
+      }
+      ctx.globalAlpha = rp.life * (theme.light ? 0.4 : 0.5);
+      ctx.strokeStyle = theme.primary;
+      ctx.lineWidth = 1.6 * rp.life + 0.4;
       ctx.beginPath();
-      ctx.moveTo(c.x, c.y);
-      ctx.lineTo(c.x - c.vx * 12, c.y - c.vy * 12);
+      ctx.arc(rp.x, rp.y, rp.r, 0, Math.PI * 2);
+      ctx.stroke();
+
+      // Second, lagging ring for a proper droplet feel.
+      ctx.globalAlpha = rp.life * 0.35;
+      ctx.strokeStyle = theme.secondary;
+      ctx.beginPath();
+      ctx.arc(rp.x, rp.y, rp.r * 0.62, 0, Math.PI * 2);
       ctx.stroke();
     }
+    ctx.globalAlpha = 1;
+  }
+
+  function render(t, theme) {
+    ctx.clearRect(0, 0, W, H);
+    drawBlobs(t, theme);
+    drawDust(t, theme);
+    drawWake(theme);
+    drawRipples(theme);
   }
 
   function frame(t) {
-    const theme = getCurrentTheme();
-    ctx.clearRect(0, 0, W, H);
-    drawStars(t, theme);
-    maybeSpawnComet();
-    drawComets(theme);
-
-    for (const layer of layers) {
-      for (const n of layer) {
-        n.update(t);
-      }
-    }
-    // edges + pulses
-    for (let i = 0; i < layers.length - 1; i++) {
-      for (const a of layers[i]) {
-        for (const b of layers[i + 1]) {
-          ctx.beginPath();
-          ctx.strokeStyle = 'rgba(255,255,255,0.035)';
-          ctx.lineWidth = 1;
-          ctx.moveTo(a.x, a.y);
-          ctx.lineTo(b.x, b.y);
-          ctx.stroke();
-          if (a.intensity > 0.55 && Math.random() < 0.012 && pulses.length < 60) {
-            pulses.push(new Pulse(a, b));
-          } else if (Math.random() < 0.0006 && pulses.length < 60) {
-            pulses.push(new Pulse(a, b));
-          }
-        }
-      }
-    }
-    for (let i = pulses.length - 1; i >= 0; i--) {
-      pulses[i].update();
-      pulses[i].draw(theme);
-      if (!pulses[i].active) pulses.splice(i, 1);
-    }
-    for (const layer of layers) {
-      for (const n of layer) n.draw(theme);
-    }
+    render(t, getCurrentTheme());
     requestAnimationFrame(frame);
   }
 
-  window.addEventListener('resize', init);
-  init();
+  window.addEventListener('resize', () => {
+    resize();
+    if (reducedMotion) render(0, getCurrentTheme());
+  });
+
+  resize();
+
   if (reducedMotion) {
-    // One static render for reduced-motion users.
-    const theme = getCurrentTheme();
-    drawStars(0, theme);
-    for (const layer of layers) for (const n of layer) n.draw(theme);
+    // One static frame and no animation loop at all.
+    render(0, getCurrentTheme());
     return;
   }
+
   requestAnimationFrame(frame);
 }
