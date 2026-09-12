@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>404 — Lost in the Neural Net</title>
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet" />
+  <style>
+    :root { --cyan: #00f3ff; --purple: #bc13fe; --bg: #0d0618; --red: #e74c3c; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg); color: #fff; font-family: 'Press Start 2P', monospace;
+      min-height: 100vh; display: flex; flex-direction: column; align-items: center;
+      justify-content: center; overflow: hidden; text-align: center; padding: 2rem 1rem;
+    }
+    .grid-floor {
+      position: absolute; bottom: -55%; left: -50%; width: 200%; height: 110%;
+      background-image: linear-gradient(rgba(188,19,254,.28) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(188,19,254,.28) 1px, transparent 1px);
+      background-size: 52px 52px; transform: perspective(520px) rotateX(60deg);
+      animation: grid 18s linear infinite; z-index: 0;
+    }
+    @keyframes grid { to { transform: perspective(520px) rotateX(60deg) translateY(52px); } }
+    .stars { position: absolute; inset: 0; z-index: 0; font-size: 22px; pointer-events: none; }
+    .stars span { position: absolute; animation: tw 3s ease-in-out infinite; }
+    @keyframes tw { 50% { opacity: .2; transform: translateY(-8px); } }
+    .stage { position: relative; z-index: 2; }
+    .digits { display: flex; align-items: flex-end; justify-content: center; gap: 6px; }
+    .four {
+      font-size: clamp(90px, 22vw, 190px); line-height: 1; color: transparent;
+      -webkit-text-stroke: 3px var(--cyan);
+      text-shadow: 0 0 18px rgba(0,243,255,.8), 0 0 60px rgba(0,243,255,.4);
+    }
+    .zero {
+      width: clamp(120px, 26vw, 220px); height: clamp(170px, 34vw, 270px);
+      border-radius: 110px 110px 18px 18px; position: relative;
+      border: 10px solid rgba(0,243,255,.35);
+      background: radial-gradient(circle at 50% 35%, rgba(255,255,255,.85), rgba(0,243,255,.25) 55%, rgba(0,243,255,.05));
+      box-shadow: 0 0 40px rgba(0,243,255,.45), inset 0 0 40px rgba(0,243,255,.25);
+      display: flex; align-items: flex-end; justify-content: center; padding-bottom: 26px;
+      animation: portal 3s ease-in-out infinite;
+    }
+    @keyframes portal { 50% { box-shadow: 0 0 70px rgba(0,243,255,.65), inset 0 0 60px rgba(0,243,255,.35); } }
+    .robot { width: 92px; animation: hover 3.2s ease-in-out infinite; }
+    @keyframes hover { 50% { transform: translateY(-8px); } }
+    .head {
+      width: 66px; height: 56px; background: #bdc3c7; border: 4px solid #2c3e50;
+      border-radius: 10px; margin: 0 auto; position: relative; padding-top: 10px;
+    }
+    .antenna { position: absolute; top: -16px; left: 26px; width: 6px; height: 14px; background: #2c3e50; }
+    .antenna::after {
+      content: ''; position: absolute; top: -10px; left: -5px; width: 14px; height: 14px;
+      background: var(--red); border: 2px solid #2c3e50; border-radius: 50%;
+      animation: blink 1s infinite;
+    }
+    @keyframes blink { 50% { opacity: .4; } }
+    .eyes { display: flex; gap: 8px; justify-content: center; }
+    .eye {
+      width: 17px; height: 17px; background: #fff; border: 3px solid #2c3e50;
+      border-radius: 50%; position: relative; overflow: hidden; cursor: crosshair;
+      transition: transform .12s;
+    }
+    .eye.scared { transform: scale(1.55); border-color: var(--red); box-shadow: 0 0 12px var(--red); }
+    .pupil { width: 6px; height: 6px; background: #2c3e50; border-radius: 50%; position: absolute; top: 3px; left: 3px; }
+    .mouth { width: 18px; height: 4px; background: #2c3e50; border-radius: 2px; margin: 7px auto 0; transition: all .2s; }
+    .robot.scared .mouth { width: 9px; height: 9px; border-radius: 50%; }
+    .body {
+      width: 56px; height: 44px; background: #bdc3c7; border: 4px solid #2c3e50;
+      border-radius: 8px; margin: 4px auto 0; display: flex; align-items: center; justify-content: center;
+    }
+    .screen { width: 36px; height: 18px; background: #2c3e50; border-radius: 3px; overflow: hidden; position: relative; }
+    .screen::after {
+      content: ''; position: absolute; top: 7px; left: -12px; width: 12px; height: 4px;
+      background: #2ecc71; box-shadow: 0 0 6px #2ecc71; animation: ecg 1.4s linear infinite;
+    }
+    @keyframes ecg { to { left: 110%; } }
+    h1 { font-size: clamp(13px, 2.6vw, 19px); margin-top: 2rem; letter-spacing: 2px; }
+    p { font-family: Rajdhani, sans-serif; font-size: 17px; color: #b8b8d0; margin: 1rem 0 2rem; }
+    .btn {
+      font-family: 'Press Start 2P', monospace; font-size: 12px; color: #fff; text-decoration: none;
+      padding: 16px 30px; border: 2px solid var(--purple);
+      box-shadow: 0 0 12px var(--purple), inset 0 0 12px rgba(188,19,254,.4);
+      transition: all .25s; display: inline-block;
+    }
+    .btn:hover { background: var(--purple); box-shadow: 0 0 26px var(--purple); }
+    .hint { margin-top: 1.4rem; font-family: Rajdhani, sans-serif; font-size: 13px; color: #6b6b85; }
+    #flash {
+      position: fixed; inset: 0; background: #fff; z-index: 99; opacity: 0;
+      pointer-events: none; display: flex; align-items: center; justify-content: center;
+      color: #000; font-size: clamp(16px, 4vw, 30px);
+    }
+    body.boom #flash { opacity: 1; transition: opacity 1.4s ease-out; }
+    body.boom .stage { animation: kaboom .7s forwards; }
+    @keyframes kaboom {
+      20% { transform: scale(1.1) rotate(-4deg); filter: hue-rotate(120deg); }
+      45% { transform: scale(1.2) rotate(4deg); filter: hue-rotate(240deg) invert(.6); }
+      100% { transform: scale(3); filter: invert(1); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div id="flash">SYSTEM OVERLOAD</div>
+  <div class="grid-floor"></div>
+  <div class="stars">
+    <span style="top:8%;left:8%">👾</span><span style="top:14%;right:12%">🛸</span>
+    <span style="top:30%;left:16%">✨</span><span style="top:22%;right:26%">👾</span>
+    <span style="bottom:32%;left:6%">🛸</span><span style="bottom:40%;right:8%">✨</span>
+  </div>
+  <div class="stage">
+    <div class="digits">
+      <div class="four">4</div>
+      <div class="zero">
+        <div class="robot" id="robot">
+          <div class="head" id="head">
+            <div class="antenna"></div>
+            <div class="eyes">
+              <div class="eye"><div class="pupil"></div></div>
+              <div class="eye"><div class="pupil"></div></div>
+            </div>
+            <div class="mouth"></div>
+          </div>
+          <div class="body"><div class="screen"></div></div>
+        </div>
+      </div>
+      <div class="four">4</div>
+    </div>
+    <h1>LOST IN THE NEURAL NET</h1>
+    <p>This page escaped into the latent space. Let's get you back to reality.</p>
+    <a class="btn" href="./">← BACK HOME</a>
+    <div class="hint">psst… the robot is watching your cursor. get close. touch its eyes. you know you want to.</div>
+  </div>
+  <script>
+    const eyes = document.querySelectorAll('.eye');
+    const pupils = document.querySelectorAll('.pupil');
+    const head = document.getElementById('head');
+    const robot = document.getElementById('robot');
+
+    eyes.forEach((eye) => {
+      eye.addEventListener('mouseenter', () => {
+        if (document.body.classList.contains('boom')) return;
+        document.body.classList.add('boom');
+        setTimeout(() => (window.location.href = './'), 1300);
+      });
+    });
+
+    document.addEventListener('mousemove', (e) => {
+      if (document.body.classList.contains('boom')) return;
+      const r = head.getBoundingClientRect();
+      const cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+      const dx = e.clientX - cx, dy = e.clientY - cy;
+      const scared = Math.hypot(dx, dy) < 220;
+      eyes.forEach((el) => el.classList.toggle('scared', scared));
+      robot.classList.toggle('scared', scared);
+      const a = Math.atan2(dy, dx);
+      pupils.forEach((p) => {
+        p.style.transform = `translate(${Math.cos(a) * 3.5}px, ${Math.sin(a) * 3.5}px)`;
+      });
+    });
+  </script>
+</body>
+</html>
