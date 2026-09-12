@@ -53,7 +53,11 @@ function tick() {
 
 function palette() {
   const t = getCurrentTheme();
-  return [t.primary, t.secondary, '#ffffff', '#facc15', '#4ade80'];
+  // Pure white vanishes on laid paper, so the light moods get ink and darker
+  // accents; the dark moods keep the bright v2.0 mix.
+  return t.light
+    ? [t.primary, t.secondary, t.ink, '#c9a227', '#15803d']
+    : [t.primary, t.secondary, '#ffffff', '#facc15', '#4ade80'];
 }
 
 export function confettiBurst({ n = 80, x = W / 2, y = H * 0.35, spread = false, colors = null } = {}) {

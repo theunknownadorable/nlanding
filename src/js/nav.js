@@ -45,10 +45,10 @@ export function initNav() {
     const max = document.documentElement.scrollHeight - window.innerHeight;
     if (progress) progress.style.width = `${max > 0 ? (y / max) * 100 : 0}%`;
     if (toTop) toTop.classList.toggle('show', y > 650);
-    if (navbar) {
-      navbar.style.background =
-        y > 24 ? 'rgba(5, 5, 12, 0.82)' : 'rgba(5, 5, 12, 0.35)';
-    }
+    // The navbar wash is driven by --nav-bg / --nav-bg-scrolled in CSS, so it
+    // follows the mood (light Scholar → dark Blackboard) instead of being
+    // hard-coded to one colour.
+    if (navbar) navbar.classList.toggle('scrolled', y > 24);
   }
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();

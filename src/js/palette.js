@@ -1,10 +1,11 @@
-// Ctrl+K command palette: jump anywhere, switch themes, launch toys.
+// Ctrl+K command palette: jump anywhere, switch moods, launch toys.
 
 import { themes, themeOrder, applyTheme, getSeasonalKey, toggleParty, cycleTheme } from './theme.js';
-import { openGame } from './game.js';
+import { openRush } from './grade-rush.js';
 import { focusTerminal } from './terminal.js';
 
 const EMAIL = 'abhisheksebinu@gmail.com';
+const DEPT_URL = 'https://tkmit.ac.in/wp_department/computer-science-engineering/';
 
 let overlay, input, list;
 let commands = [];
@@ -13,6 +14,10 @@ let selected = 0;
 
 function goto(hash) {
   document.querySelector(hash)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function toast(message) {
+  window.dispatchEvent(new CustomEvent('nlanding:toast', { detail: { message } }));
 }
 
 function buildCommands() {
@@ -28,54 +33,72 @@ function buildCommands() {
     go('About', '#about', 'me bio who'),
     go('Skills', '#skills', 'tech stack arsenal languages'),
     go('Projects', '#projects', 'work medibot github rfa'),
+    go('Academia', '#academia', 'professor teaching research office hours students tkmit department'),
     go('Journey', '#journey', 'timeline story chapters education'),
     go('Playground', '#playground', 'terminal game reflex toys fun'),
     go('Contact', '#contact', 'email hire socials footer'),
     {
-      group: 'Theme',
-      title: 'Auto theme (follow the season)',
+      group: 'Academia',
+      title: '🏛️ Open the TKMIT department page',
+      hint: 'external',
+      keywords: 'tkmit tkm institute technology department computer science engineering college campus',
+      run: () => window.open(DEPT_URL, '_blank', 'noopener'),
+    },
+    {
+      group: 'Academia',
+      title: '🕒 Office hours (Mon–Fri 3:30–4:30)',
+      hint: '#academia',
+      keywords: 'office hours students appointment slot teaching help',
+      run: () => {
+        goto('#academia');
+        toast('🕒 Office hours: Mon–Fri, 3:30–4:30 pm · CSE, TKMIT');
+      },
+    },
+    {
+      group: 'Mood',
+      title: 'Auto mood (follow the academic calendar)',
       hint: 'seasonal',
-      keywords: 'auto season theme',
+      keywords: 'auto season theme mood calendar',
       run: () => {
         applyTheme(getSeasonalKey());
-        window.dispatchEvent(new CustomEvent('nlanding:toast', { detail: { message: '📅 Seasonal theme engaged' } }));
+        toast('📅 Seasonal mood engaged');
       },
     },
     ...themeOrder.map((key) => ({
-      group: 'Theme',
+      group: 'Mood',
       title: `${themes[key].emoji} ${themes[key].label}`,
       hint: 'theme',
-      keywords: `theme ${key} ${themes[key].label} color`,
+      keywords: `theme mood ${key} ${themes[key].label} color colour`,
       run: () => {
         applyTheme(key);
-        window.dispatchEvent(new CustomEvent('nlanding:toast', { detail: { message: `${themes[key].emoji} ${themes[key].label} mode engaged` } }));
+        toast(`${themes[key].emoji} ${themes[key].label} mode engaged`);
       },
     })),
     {
       group: 'Toys',
       title: '🪩 Toggle PARTY mode',
       hint: 'disco',
-      keywords: 'party disco confetti fun dance',
+      keywords: 'party disco confetti fun dance konami',
       run: () => {
         const on = toggleParty();
         if (on) {
           window.dispatchEvent(new CustomEvent('nlanding:confetti', { detail: { n: 140 } }));
-          window.dispatchEvent(new CustomEvent('nlanding:toast', { detail: { message: '🪩 PARTY MODE: ON' } }));
+          toast('🪩 PARTY MODE: ON');
         }
       },
     },
     {
       group: 'Toys',
-      title: '🎮 Launch NEURAL JUMP 2.0',
+      title: '🎓 Launch GRADE RUSH',
       hint: 'secret game',
-      keywords: 'game play jump platformer secret neural',
-      run: () => setTimeout(openGame, 120),
+      keywords: 'game play grade rush chalkboard catch apple secret professor tenure',
+      run: () => setTimeout(openRush, 120),
     },
     {
       group: 'Toys',
       title: '💻 Focus the terminal',
       hint: 'shell',
-      keywords: 'terminal shell console focus type',
+      keywords: 'terminal shell console focus type tkmit academia sudo tenure',
       run: () => focusTerminal(),
     },
     {
@@ -87,12 +110,12 @@ function buildCommands() {
         const roll = Math.random();
         if (roll < 0.3) {
           cycleTheme();
-          window.dispatchEvent(new CustomEvent('nlanding:toast', { detail: { message: '🎲 The vibes have shifted' } }));
+          toast('🎲 The vibes have shifted');
         } else if (roll < 0.6) {
           window.dispatchEvent(new CustomEvent('nlanding:confetti', { detail: { n: 150 } }));
-          window.dispatchEvent(new CustomEvent('nlanding:toast', { detail: { message: '🎲 Confetti! You earned it.' } }));
+          toast('🎲 Confetti! You earned it.');
         } else {
-          setTimeout(openGame, 120);
+          setTimeout(openRush, 120);
         }
       },
     },
@@ -100,13 +123,13 @@ function buildCommands() {
       group: 'Contact',
       title: '📋 Copy email address',
       hint: EMAIL,
-      keywords: 'email copy contact mail hire',
+      keywords: 'email copy contact mail hire students',
       run: async () => {
         try {
           await navigator.clipboard.writeText(EMAIL);
-          window.dispatchEvent(new CustomEvent('nlanding:toast', { detail: { message: '📋 Email copied to clipboard!' } }));
+          toast('📋 Email copied to clipboard!');
         } catch {
-          window.dispatchEvent(new CustomEvent('nlanding:toast', { detail: { message: `📧 ${EMAIL}` } }));
+          toast(`📧 ${EMAIL}`);
         }
       },
     },
@@ -117,13 +140,20 @@ function buildCommands() {
       keywords: 'github profile code repos',
       run: () => window.open('https://github.com/theunknownadorable', '_blank', 'noopener'),
     },
+    {
+      group: 'Contact',
+      title: '💼 Open LinkedIn',
+      hint: 'external',
+      keywords: 'linkedin profile network resume cv',
+      run: () => window.open('https://www.linkedin.com/in/abhishekofficial2427/', '_blank', 'noopener'),
+    },
   ];
 }
 
 function render() {
   list.innerHTML = '';
   if (!filtered.length) {
-    list.innerHTML = `<div class="px-4 py-6 text-center text-sm text-gray-500 font-body">no spells match "<span class="text-gray-300"></span>"</div>`;
+    list.innerHTML = `<div class="px-4 py-6 text-center text-sm txt-faint font-body">nothing on the syllabus matches "<span class="txt-soft"></span>"</div>`;
     list.querySelector('span').textContent = input.value;
     return;
   }
@@ -132,17 +162,18 @@ function render() {
     if (cmd.group !== lastGroup) {
       lastGroup = cmd.group;
       const g = document.createElement('div');
-      g.className = 'px-4 pt-3 pb-1 text-[11px] font-mono uppercase tracking-[0.25em] text-gray-500';
+      g.className = 'pal-group px-4 pt-3 pb-1 text-[11px] font-mono uppercase tracking-[0.25em]';
       g.textContent = cmd.group;
       list.appendChild(g);
     }
     const item = document.createElement('button');
+    item.type = 'button';
     item.className = `palette-item w-full text-left px-4 py-2.5 rounded-lg flex items-center justify-between gap-3 ${idx === selected ? 'selected' : ''}`;
     const t = document.createElement('span');
     t.className = 'font-body font-semibold text-[15px]';
     t.textContent = cmd.title;
     const h = document.createElement('span');
-    h.className = 'text-xs font-mono text-gray-500 shrink-0';
+    h.className = 'text-xs font-mono txt-faint shrink-0';
     h.textContent = cmd.hint;
     item.append(t, h);
     item.addEventListener('click', () => {
@@ -188,8 +219,12 @@ export function closePalette() {
   if (!overlay || overlay.classList.contains('hidden')) return;
   overlay.classList.add('hidden');
   overlay.classList.remove('flex');
-  // only restore scroll if the game isn't holding it
-  if (document.getElementById('game-modal')?.classList.contains('hidden')) {
+  // Drop focus so the global hotkeys (esc / arrows / Konami) work again the
+  // moment the palette is gone — otherwise a launch straight into Grade Rush
+  // leaves focus parked in a hidden input and swallows the first keystrokes.
+  input?.blur();
+  // only restore scroll if Grade Rush isn't holding it
+  if (document.getElementById('rush-modal')?.classList.contains('hidden')) {
     document.body.style.overflow = '';
   }
 }

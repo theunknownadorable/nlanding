@@ -1,5 +1,6 @@
-// NLANDING v2 — boot sequence. Every module is independent; this file just
-// wakes them all up and wires the cross-cutting extras.
+// NLANDING v2.1 · "professor era" — boot sequence.
+// Every module stays independent; this file wakes them up and wires the
+// cross-cutting extras.
 
 import './style.css';
 
@@ -12,7 +13,7 @@ import { initReveal } from './js/reveal.js';
 import { initNav } from './js/nav.js';
 import { initTilt } from './js/tilt.js';
 import { initTypewriter } from './js/typewriter.js';
-import { initGame, openGame } from './js/game.js';
+import { initGradeRush, openRush } from './js/grade-rush.js';
 import { initReflex } from './js/reflex.js';
 import { initKonami } from './js/konami.js';
 import { initGithubStars } from './js/github.js';
@@ -32,15 +33,16 @@ initReveal();
 initNav();
 initTilt();
 initTypewriter(document.getElementById('typewriter'), [
-  'AI/ML Enthusiast',
+  'Assistant Professor @ TKMIT',
+  'AI/ML Researcher',
+  'Machine Unlearning Enthusiast',
   'Robot Befriender',
   'Python Wrangler',
-  'Bug-to-Feature Alchemist',
-  'Professional Overthinker',
+  'Office-Hours Regular',
 ]);
 
 // ---- toys ----
-initGame();
+initGradeRush();
 initReflex();
 initGithubStars();
 initTerminal();
@@ -54,7 +56,7 @@ initKonami(() => {
   }
 });
 
-// ---- hero photo: 5 taps to jack in ----
+// ---- hero polaroid: 5 taps to open Grade Rush ----
 (function secretPhoto() {
   const photo = document.getElementById('brain-trigger');
   if (!photo) return;
@@ -64,11 +66,11 @@ initKonami(() => {
     taps++;
     clearTimeout(timer);
     timer = setTimeout(() => (taps = 0), 1300);
-    if (taps === 3) toast('you feel a strange energy… (3/5) 👀');
-    if (taps === 4) toast('almost there… (4/5) ⚡');
+    if (taps === 3) toast('the chalk dust is stirring… (3/5) 👀');
+    if (taps === 4) toast('almost there… (4/5) 🎓');
     if (taps >= 5) {
       taps = 0;
-      openGame();
+      openRush();
     }
   });
 })();
@@ -78,9 +80,9 @@ document.getElementById('party-btn')?.addEventListener('click', () => {
   const on = toggleParty();
   if (on) {
     confettiBurst({ n: 140 });
-    toast('🪩 PARTY MODE: ON (pick any theme to chill)');
+    toast('🪩 PARTY MODE: ON (pick any mood to chill)');
   } else {
-    toast('party mode off. hydration break. 💧');
+    toast('party mode off. back to the syllabus. 📖');
   }
 });
 
@@ -111,13 +113,14 @@ document.querySelectorAll('.project-card[data-href]').forEach((card) => {
 });
 
 // ---- footer year ----
-document.getElementById('year').textContent = new Date().getFullYear();
+const yearEl = document.getElementById('year');
+if (yearEl) yearEl.textContent = new Date().getFullYear();
 
 // ---- console easter egg for fellow devs ----
 console.log(
-  '%c⚡ nlanding v2.0 — hello, curious dev! Try the Konami code: ↑↑↓↓←→←→BA',
-  'background:#0a0a12;color:#00f2ff;font-size:13px;padding:8px;border-radius:6px;'
+  '%c🎓 nlanding v2.1 “professor era” — office hours are open. Try the Konami code: ↑↑↓↓←→←→BA',
+  'background:#f6f2e9;color:#1d4ed8;font-size:13px;padding:8px;border-radius:6px;border:1px solid #b45309;'
 );
 
-// expose palette opener for inline handlers (none by default, but handy)
-window.nlanding = { openPalette, openGame };
+// expose openers for inline handlers and curious visitors
+window.nlanding = { openPalette, openRush };

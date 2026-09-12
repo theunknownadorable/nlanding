@@ -3,161 +3,412 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>404 — Lost in the Neural Net</title>
+  <title>404 — Off the Syllabus</title>
+  <meta name="description" content="That page isn't on the reading list. Let's get you back to the syllabus." />
+  <meta name="theme-color" content="#f6f2e9" />
   <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,900&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
   <style>
-    :root { --cyan: #00f3ff; --purple: #bc13fe; --bg: #0d0618; --red: #e74c3c; }
+    :root {
+      --paper: #f6f2e9;
+      --ink: #1c2433;
+      --ink-soft: #4a5464;
+      --ink-faint: #7c8493;
+      --primary: #1d4ed8;
+      --secondary: #b45309;
+      --red: #b91c1c;
+      --line: rgba(28, 36, 51, 0.14);
+    }
     * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { height: 100%; }
     body {
-      background: var(--bg); color: #fff; font-family: 'Press Start 2P', monospace;
-      min-height: 100vh; display: flex; flex-direction: column; align-items: center;
-      justify-content: center; overflow: hidden; text-align: center; padding: 2rem 1rem;
+      min-height: 100%;
+      background-color: var(--paper);
+      /* faint ruled-paper lines, the way a lecture pad looks */
+      background-image: repeating-linear-gradient(
+        180deg,
+        transparent 0 33px,
+        var(--line) 33px 34px
+      );
+      color: var(--ink);
+      font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 3rem 1.25rem;
+      position: relative;
+      overflow-x: hidden;
     }
-    .grid-floor {
-      position: absolute; bottom: -55%; left: -50%; width: 200%; height: 110%;
-      background-image: linear-gradient(rgba(188,19,254,.28) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(188,19,254,.28) 1px, transparent 1px);
-      background-size: 52px 52px; transform: perspective(520px) rotateX(60deg);
-      animation: grid 18s linear infinite; z-index: 0;
+    /* left margin rule, like a notebook */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: clamp(18px, 6vw, 72px);
+      width: 2px;
+      background: rgba(185, 28, 28, 0.22);
     }
-    @keyframes grid { to { transform: perspective(520px) rotateX(60deg) translateY(52px); } }
-    .stars { position: absolute; inset: 0; z-index: 0; font-size: 22px; pointer-events: none; }
-    .stars span { position: absolute; animation: tw 3s ease-in-out infinite; }
-    @keyframes tw { 50% { opacity: .2; transform: translateY(-8px); } }
-    .stage { position: relative; z-index: 2; }
-    .digits { display: flex; align-items: flex-end; justify-content: center; gap: 6px; }
-    .four {
-      font-size: clamp(90px, 22vw, 190px); line-height: 1; color: transparent;
-      -webkit-text-stroke: 3px var(--cyan);
-      text-shadow: 0 0 18px rgba(0,243,255,.8), 0 0 60px rgba(0,243,255,.4);
+    .sheet {
+      position: relative;
+      max-width: 620px;
+      width: 100%;
+      background: #fffdf7;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(28, 36, 51, 0.08), 0 26px 60px rgba(28, 36, 51, 0.14);
+      padding: clamp(1.75rem, 5vw, 3rem) clamp(1.25rem, 5vw, 3rem);
+      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease;
     }
-    .zero {
-      width: clamp(120px, 26vw, 220px); height: clamp(170px, 34vw, 270px);
-      border-radius: 110px 110px 18px 18px; position: relative;
-      border: 10px solid rgba(0,243,255,.35);
-      background: radial-gradient(circle at 50% 35%, rgba(255,255,255,.85), rgba(0,243,255,.25) 55%, rgba(0,243,255,.05));
-      box-shadow: 0 0 40px rgba(0,243,255,.45), inset 0 0 40px rgba(0,243,255,.25);
-      display: flex; align-items: flex-end; justify-content: center; padding-bottom: 26px;
-      animation: portal 3s ease-in-out infinite;
+    .kicker {
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+      font-size: 11px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 1.1rem;
     }
-    @keyframes portal { 50% { box-shadow: 0 0 70px rgba(0,243,255,.65), inset 0 0 60px rgba(0,243,255,.35); } }
-    .robot { width: 92px; animation: hover 3.2s ease-in-out infinite; }
-    @keyframes hover { 50% { transform: translateY(-8px); } }
+    .four04 {
+      position: relative;
+      display: inline-block;
+      line-height: 1;
+    }
+    .four04 span {
+      font-family: 'Fraunces', ui-serif, Georgia, serif;
+      font-weight: 900;
+      font-size: clamp(64px, 17vw, 118px);
+      color: var(--ink);
+      letter-spacing: -0.02em;
+    }
+    .circle-pen {
+      position: absolute;
+      inset: -14% -10%;
+      width: 120%;
+      height: 128%;
+      overflow: visible;
+      pointer-events: none;
+    }
+    .circle-pen path {
+      fill: none;
+      stroke: var(--red);
+      stroke-width: 3.4;
+      stroke-linecap: round;
+      opacity: 0.78;
+      stroke-dasharray: 420;
+      stroke-dashoffset: 420;
+      animation: circle-in 1.5s 0.35s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+    }
+    @keyframes circle-in { to { stroke-dashoffset: 0; } }
+    h1 {
+      font-family: 'Fraunces', ui-serif, Georgia, serif;
+      font-weight: 900;
+      font-size: clamp(24px, 5.4vw, 38px);
+      letter-spacing: -0.01em;
+      margin: 0.9rem 0 0.6rem;
+    }
+    .lede {
+      color: var(--ink-soft);
+      font-size: 16.5px;
+      line-height: 1.65;
+      max-width: 46ch;
+      margin: 0 auto 1.6rem;
+    }
+    .grade {
+      display: inline-flex;
+      align-items: baseline;
+      gap: 0.5rem;
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+      font-size: 12px;
+      color: var(--ink-faint);
+      border-top: 1px dashed var(--line);
+      border-bottom: 1px dashed var(--line);
+      padding: 0.55rem 0.9rem;
+      margin-bottom: 1.7rem;
+    }
+    .grade b { color: var(--red); font-size: 15px; }
+
+    /* ---- the TA-bot ---- */
+    .bot {
+      width: 108px;
+      margin: 0 auto 1.4rem;
+      position: relative;
+      animation: hover 4.2s ease-in-out infinite;
+    }
+    @keyframes hover { 50% { transform: translateY(-7px); } }
+    .mortarboard {
+      position: absolute;
+      top: -16px;
+      left: 50%;
+      transform: translateX(-50%) rotate(-7deg);
+      width: 66px;
+      height: 22px;
+      z-index: 3;
+    }
+    .mortarboard::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--primary);
+      clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+    }
+    .mortarboard::after {
+      content: '';
+      position: absolute;
+      right: -3px;
+      top: 12px;
+      width: 3px;
+      height: 16px;
+      background: var(--secondary);
+      border-radius: 2px;
+      box-shadow: 0 5px 0 -0.5px var(--secondary);
+    }
     .head {
-      width: 66px; height: 56px; background: #bdc3c7; border: 4px solid #2c3e50;
-      border-radius: 10px; margin: 0 auto; position: relative; padding-top: 10px;
+      width: 88px;
+      height: 74px;
+      margin: 6px auto 0;
+      background: #e9e2d2;
+      border: 3px solid var(--ink);
+      border-radius: 16px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      transition: background 0.25s ease, border-color 0.25s ease;
     }
-    .antenna { position: absolute; top: -16px; left: 26px; width: 6px; height: 14px; background: #2c3e50; }
-    .antenna::after {
-      content: ''; position: absolute; top: -10px; left: -5px; width: 14px; height: 14px;
-      background: var(--red); border: 2px solid #2c3e50; border-radius: 50%;
-      animation: blink 1s infinite;
-    }
-    @keyframes blink { 50% { opacity: .4; } }
-    .eyes { display: flex; gap: 8px; justify-content: center; }
     .eye {
-      width: 17px; height: 17px; background: #fff; border: 3px solid #2c3e50;
-      border-radius: 50%; position: relative; overflow: hidden; cursor: crosshair;
-      transition: transform .12s;
+      width: 26px;
+      height: 26px;
+      background: #fffdf7;
+      border: 3px solid var(--ink);
+      border-radius: 50%;
+      position: relative;
+      cursor: crosshair;
+      transition: transform 0.16s ease, border-color 0.2s ease, box-shadow 0.2s ease;
     }
-    .eye.scared { transform: scale(1.55); border-color: var(--red); box-shadow: 0 0 12px var(--red); }
-    .pupil { width: 6px; height: 6px; background: #2c3e50; border-radius: 50%; position: absolute; top: 3px; left: 3px; }
-    .mouth { width: 18px; height: 4px; background: #2c3e50; border-radius: 2px; margin: 7px auto 0; transition: all .2s; }
-    .robot.scared .mouth { width: 9px; height: 9px; border-radius: 50%; }
-    .body {
-      width: 56px; height: 44px; background: #bdc3c7; border: 4px solid #2c3e50;
-      border-radius: 8px; margin: 4px auto 0; display: flex; align-items: center; justify-content: center;
+    .pupil {
+      width: 9px;
+      height: 9px;
+      background: var(--ink);
+      border-radius: 50%;
+      position: absolute;
+      top: 5px;
+      left: 5px;
+      transition: transform 0.09s linear;
     }
-    .screen { width: 36px; height: 18px; background: #2c3e50; border-radius: 3px; overflow: hidden; position: relative; }
-    .screen::after {
-      content: ''; position: absolute; top: 7px; left: -12px; width: 12px; height: 4px;
-      background: #2ecc71; box-shadow: 0 0 6px #2ecc71; animation: ecg 1.4s linear infinite;
+    .bot.near .eye { transform: scale(1.2); border-color: var(--red); box-shadow: 0 0 0 3px rgba(185, 28, 28, 0.16); }
+    .bot.near .head { background: #f3dede; border-color: var(--red); }
+    .mouth {
+      position: absolute;
+      bottom: 9px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 26px;
+      height: 4px;
+      border-radius: 3px;
+      background: var(--ink);
+      transition: all 0.2s ease;
     }
-    @keyframes ecg { to { left: 110%; } }
-    h1 { font-size: clamp(13px, 2.6vw, 19px); margin-top: 2rem; letter-spacing: 2px; }
-    p { font-family: Rajdhani, sans-serif; font-size: 17px; color: #b8b8d0; margin: 1rem 0 2rem; }
+    .bot.near .mouth { width: 11px; height: 11px; border-radius: 50%; }
+    .bot .blush { position: absolute; top: 40px; width: 11px; height: 6px; border-radius: 50%; background: rgba(185, 28, 28, 0.22); opacity: 0; transition: opacity 0.2s; }
+    .bot.near .blush { opacity: 1; }
+    .bot .blush.l { left: 9px; }
+    .bot .blush.r { right: 9px; }
+
     .btn {
-      font-family: 'Press Start 2P', monospace; font-size: 12px; color: #fff; text-decoration: none;
-      padding: 16px 30px; border: 2px solid var(--purple);
-      box-shadow: 0 0 12px var(--purple), inset 0 0 12px rgba(188,19,254,.4);
-      transition: all .25s; display: inline-block;
+      display: inline-block;
+      font-family: 'Fraunces', ui-serif, Georgia, serif;
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: #fff;
+      background: var(--primary);
+      border: 1px solid var(--primary);
+      border-radius: 7px;
+      padding: 0.95rem 1.9rem;
+      box-shadow: 0 1px 2px rgba(29, 78, 216, 0.3);
+      transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
     }
-    .btn:hover { background: var(--purple); box-shadow: 0 0 26px var(--purple); }
-    .hint { margin-top: 1.4rem; font-family: Rajdhani, sans-serif; font-size: 13px; color: #6b6b85; }
-    #flash {
-      position: fixed; inset: 0; background: #fff; z-index: 99; opacity: 0;
-      pointer-events: none; display: flex; align-items: center; justify-content: center;
-      color: #000; font-size: clamp(16px, 4vw, 30px);
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 22px rgba(29, 78, 216, 0.34); filter: brightness(1.06); }
+    .btn:active { transform: translateY(0); }
+
+    .countdown {
+      margin-top: 1.15rem;
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+      font-size: 12px;
+      color: var(--ink-faint);
     }
-    body.boom #flash { opacity: 1; transition: opacity 1.4s ease-out; }
-    body.boom .stage { animation: kaboom .7s forwards; }
-    @keyframes kaboom {
-      20% { transform: scale(1.1) rotate(-4deg); filter: hue-rotate(120deg); }
-      45% { transform: scale(1.2) rotate(4deg); filter: hue-rotate(240deg) invert(.6); }
-      100% { transform: scale(3); filter: invert(1); opacity: 0; }
+    .countdown button {
+      background: none;
+      border: none;
+      color: var(--secondary);
+      font: inherit;
+      text-decoration: underline;
+      text-decoration-style: dotted;
+      cursor: pointer;
+    }
+    .countdown button:hover { color: var(--primary); }
+    .hint {
+      margin-top: 1.5rem;
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+      font-size: 11.5px;
+      color: var(--ink-faint);
+      line-height: 1.7;
+    }
+    .foot {
+      margin-top: 2rem;
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+      font-size: 11px;
+      color: var(--ink-faint);
+    }
+    .foot a { color: var(--ink-soft); text-decoration: underline; text-decoration-style: dotted; }
+    .foot a:hover { color: var(--primary); }
+
+    /* the sheet gets crumpled away on redirect */
+    body.leaving .sheet {
+      transform: rotate(-3deg) scale(0.94) translateY(10px);
+      opacity: 0;
+    }
+    body.leaving .bot { animation: none; transform: scale(1.18) rotate(8deg); }
+
+    @media (prefers-reduced-motion: reduce) {
+      .bot, .circle-pen path { animation: none !important; }
+      .circle-pen path { stroke-dashoffset: 0; }
+      body.leaving .sheet { transition: opacity 0.2s ease; transform: none; }
     }
   </style>
 </head>
 <body>
-  <div id="flash">SYSTEM OVERLOAD</div>
-  <div class="grid-floor"></div>
-  <div class="stars">
-    <span style="top:8%;left:8%">👾</span><span style="top:14%;right:12%">🛸</span>
-    <span style="top:30%;left:16%">✨</span><span style="top:22%;right:26%">👾</span>
-    <span style="bottom:32%;left:6%">🛸</span><span style="bottom:40%;right:8%">✨</span>
-  </div>
-  <div class="stage">
-    <div class="digits">
-      <div class="four">4</div>
-      <div class="zero">
-        <div class="robot" id="robot">
-          <div class="head" id="head">
-            <div class="antenna"></div>
-            <div class="eyes">
-              <div class="eye"><div class="pupil"></div></div>
-              <div class="eye"><div class="pupil"></div></div>
-            </div>
-            <div class="mouth"></div>
-          </div>
-          <div class="body"><div class="screen"></div></div>
-        </div>
-      </div>
-      <div class="four">4</div>
+  <main class="sheet">
+    <p class="kicker">404 · not on the reading list</p>
+
+    <div class="four04">
+      <span>404</span>
+      <svg class="circle-pen" viewBox="0 0 200 120" aria-hidden="true">
+        <path d="M104 12 C48 6 12 30 14 62 C16 96 62 112 112 108 C160 104 190 84 186 56 C183 32 150 16 108 18" />
+      </svg>
     </div>
-    <h1>LOST IN THE NEURAL NET</h1>
-    <p>This page escaped into the latent space. Let's get you back to reality.</p>
-    <a class="btn" href="./">← BACK HOME</a>
-    <div class="hint">psst… the robot is watching your cursor. get close. touch its eyes. you know you want to.</div>
-  </div>
+
+    <h1>Off the Syllabus</h1>
+    <p class="lede">
+      This page isn't on the reading list — and, between us, it may never have been.
+      It has been marked accordingly.
+    </p>
+
+    <div class="grade">
+      <span>assessed grade for this URL:</span><b>F</b><span>· see me after class</span>
+    </div>
+
+    <div class="bot" id="bot">
+      <span class="mortarboard" aria-hidden="true"></span>
+      <div class="head" id="head">
+        <div class="eye" id="eye-l"><div class="pupil"></div></div>
+        <div class="eye" id="eye-r"><div class="pupil"></div></div>
+        <span class="blush l"></span>
+        <span class="blush r"></span>
+        <span class="mouth"></span>
+      </div>
+    </div>
+
+    <a class="btn" href="./">← Back to the syllabus</a>
+
+    <p class="countdown" id="countdown">
+      Redirecting to the home page in <b id="secs">8</b>s ·
+      <button type="button" id="stay">stay on this page</button>
+    </p>
+
+    <p class="hint">
+      psst… the TA-bot is following your cursor. Get close. Touch its eyes — you know you want to.
+    </p>
+  </main>
+
+  <footer class="foot">
+    <p>Abhishek S. · Assistant Professor, CSE · <a href="./">nlanding v2.1</a></p>
+  </footer>
+
   <script>
-    const eyes = document.querySelectorAll('.eye');
-    const pupils = document.querySelectorAll('.pupil');
-    const head = document.getElementById('head');
-    const robot = document.getElementById('robot');
+    (function () {
+      var bot = document.getElementById('bot');
+      var head = document.getElementById('head');
+      var pupils = document.querySelectorAll('.pupil');
+      var eyes = document.querySelectorAll('.eye');
+      var secsEl = document.getElementById('secs');
+      var stayBtn = document.getElementById('stay');
+      var countdownEl = document.getElementById('countdown');
+      var reduced = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
 
-    eyes.forEach((eye) => {
-      eye.addEventListener('mouseenter', () => {
-        if (document.body.classList.contains('boom')) return;
-        document.body.classList.add('boom');
-        setTimeout(() => (window.location.href = './'), 1300);
-      });
-    });
+      var leaving = false;
+      var seconds = 8;
+      var timer = null;
 
-    document.addEventListener('mousemove', (e) => {
-      if (document.body.classList.contains('boom')) return;
-      const r = head.getBoundingClientRect();
-      const cx = r.left + r.width / 2, cy = r.top + r.height / 2;
-      const dx = e.clientX - cx, dy = e.clientY - cy;
-      const scared = Math.hypot(dx, dy) < 220;
-      eyes.forEach((el) => el.classList.toggle('scared', scared));
-      robot.classList.toggle('scared', scared);
-      const a = Math.atan2(dy, dx);
-      pupils.forEach((p) => {
-        p.style.transform = `translate(${Math.cos(a) * 3.5}px, ${Math.sin(a) * 3.5}px)`;
+      function go() {
+        if (leaving) return;
+        leaving = true;
+        if (timer) clearInterval(timer);
+        document.body.classList.add('leaving');
+        setTimeout(function () { window.location.href = './'; }, reduced ? 120 : 620);
+      }
+
+      function tick() {
+        seconds -= 1;
+        if (secsEl) secsEl.textContent = String(Math.max(0, seconds));
+        if (seconds <= 0) go();
+      }
+
+      function startCountdown() {
+        if (timer) clearInterval(timer);
+        timer = setInterval(tick, 1000);
+      }
+
+      function cancelCountdown() {
+        if (timer) clearInterval(timer);
+        timer = null;
+        if (countdownEl) {
+          countdownEl.innerHTML = 'Countdown cancelled. Take your time — the reading list will wait.';
+        }
+      }
+
+      if (stayBtn) stayBtn.addEventListener('click', cancelCountdown);
+      startCountdown();
+
+      // Eyes track the cursor; get close and the bot panics.
+      document.addEventListener('mousemove', function (e) {
+        if (leaving) return;
+        var r = head.getBoundingClientRect();
+        var cx = r.left + r.width / 2;
+        var cy = r.top + r.height / 2;
+        var dx = e.clientX - cx;
+        var dy = e.clientY - cy;
+        var near = Math.sqrt(dx * dx + dy * dy) < 190;
+        bot.classList.toggle('near', near);
+        var a = Math.atan2(dy, dx);
+        var dist = near ? 5.5 : 4;
+        for (var i = 0; i < pupils.length; i++) {
+          pupils[i].style.transform =
+            'translate(' + (Math.cos(a) * dist).toFixed(2) + 'px,' + (Math.sin(a) * dist).toFixed(2) + 'px)';
+        }
       });
-    });
+
+      // Touch an eye: instant, dramatic redirect.
+      for (var i = 0; i < eyes.length; i++) {
+        eyes[i].addEventListener('mouseenter', function () {
+          bot.classList.add('near');
+          go();
+        });
+        eyes[i].addEventListener('click', go);
+      }
+
+      // Keyboard users get an equally quick exit.
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' || e.key === 'Enter') go();
+      });
+    })();
   </script>
 </body>
 </html>

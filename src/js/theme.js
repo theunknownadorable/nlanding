@@ -1,146 +1,307 @@
-// Seasonal + manual theme engine. Carries forward the seasonal spirit of
-// portfolio v1, now with a manual switcher, persistence, and PARTY mode.
+// v2.1 · "professor era" theme engine.
+//
+// Six academic moods, one light-first (Scholar) and five dark. Each theme is
+// a compact spec; every other colour the design system needs (soft/faint ink,
+// hairlines, card surfaces, tints, navbar wash) is *derived* from it so the
+// moods stay visually consistent instead of being hand-tuned one by one.
+//
+// Carries forward from v2.0: seasonal auto-detect, manual switcher,
+// localStorage persistence, and PARTY mode with hue cycling.
 
-export const themes = {
-  cyber: {
-    label: 'Cyberpunk',
-    emoji: '🌆',
-    primary: '#00f2ff',
-    secondary: '#bd00ff',
-    bg: ['#11111d', '#000000'],
-    node: 'rgba(0, 242, 255, 0.35)',
-    pulse: '#bd00ff',
-  },
-  frost: {
-    label: 'Winter Frost',
-    emoji: '❄️',
-    primary: '#00ffff',
-    secondary: '#e0f2ff',
-    bg: ['#0b1026', '#000000'],
-    node: 'rgba(200, 255, 255, 0.45)',
-    pulse: '#ffffff',
-  },
-  bloom: {
-    label: 'Spring Bloom',
-    emoji: '🌸',
-    primary: '#2ecc71',
-    secondary: '#ff6b81',
-    bg: ['#0f2015', '#000000'],
-    node: 'rgba(46, 204, 113, 0.35)',
-    pulse: '#ff6b81',
-  },
-  solar: {
-    label: 'Solar Flare',
-    emoji: '☀️',
-    primary: '#f1c40f',
-    secondary: '#e67e22',
-    bg: ['#261c0b', '#000000'],
-    node: 'rgba(241, 196, 15, 0.35)',
-    pulse: '#e67e22',
-  },
-  harvest: {
-    label: 'Autumn Harvest',
-    emoji: '🍂',
-    primary: '#e67e22',
-    secondary: '#c0392b',
-    bg: ['#26120b', '#000000'],
-    node: 'rgba(230, 126, 34, 0.45)',
-    pulse: '#f39c12',
-  },
-  spooky: {
-    label: 'Spooky Season',
-    emoji: '🎃',
-    primary: '#ff9f43',
-    secondary: '#8e44ad',
-    bg: ['#1a0b26', '#000000'],
-    node: 'rgba(255, 159, 67, 0.45)',
-    pulse: '#a55eea',
-  },
-};
-
-export const themeOrder = ['cyber', 'frost', 'bloom', 'solar', 'harvest', 'spooky'];
+export const themeOrder = [
+  'scholar',
+  'blackboard',
+  'ivy',
+  'meridian',
+  'archive',
+  'convocation',
+];
 
 const STORAGE_KEY = 'nlanding-theme';
 
-let currentKey = 'cyber';
-let party = { active: false, hue: 0, timer: null, confettiTimer: null };
-
-export function getSeasonalKey() {
-  const now = new Date();
-  const month = now.getMonth();
-  const day = now.getDate();
-  if ((month === 9 && day >= 25) || (month === 10 && day <= 2)) return 'spooky';
-  if (month === 11 || month === 0 || month === 1 || (month === 10 && day >= 20))
-    return 'frost';
-  if (month >= 2 && month <= 4) return 'bloom';
-  if (month >= 5 && month <= 7) return 'solar';
-  if (month >= 8 && month <= 10) return 'harvest';
-  return 'cyber';
-}
+/* ------------------------------------------------------------------ */
+/* colour helpers                                                      */
+/* ------------------------------------------------------------------ */
 
 export function hexToRgb(hex) {
-  const h = hex.replace('#', '');
+  const h = String(hex).replace('#', '');
   const n = parseInt(
-    h.length === 3 ? h.split('').map((c) => c + c).join('') : h,
+    h.length === 3
+      ? h
+          .split('')
+          .map((c) => c + c)
+          .join('')
+      : h,
     16
   );
   return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
 }
 
-function paint(theme, badgeText) {
-  const root = document.documentElement;
-  const [pr, pg, pb] = hexToRgb(theme.primary);
-  const [sr, sg, sb] = hexToRgb(theme.secondary);
-  root.style.setProperty('--primary', theme.primary);
-  root.style.setProperty('--primary-rgb', `${pr}, ${pg}, ${pb}`);
-  root.style.setProperty('--secondary', theme.secondary);
-  root.style.setProperty('--secondary-rgb', `${sr}, ${sg}, ${sb}`);
-  root.style.setProperty('--glass-border', `rgba(${pr}, ${pg}, ${pb}, 0.35)`);
-  root.style.setProperty('--glass-shadow', `rgba(${pr}, ${pg}, ${pb}, 0.14)`);
+export function rgbToHex(r, g, b) {
+  const c = (v) =>
+    Math.max(0, Math.min(255, Math.round(v))).toString(16).padStart(2, '0');
+  return `#${c(r)}${c(g)}${c(b)}`;
+}
 
-  const bg = document.getElementById('bg-canvas');
-  if (bg) {
-    bg.style.background = `radial-gradient(circle at center, ${theme.bg[0]} 0%, ${theme.bg[1]} 100%)`;
-  }
+/** Blend two hex colours. t = 0 → a, t = 1 → b. */
+function mix(a, b, t) {
+  const [r1, g1, b1] = hexToRgb(a);
+  const [r2, g2, b2] = hexToRgb(b);
+  return rgbToHex(r1 + (r2 - r1) * t, g1 + (g2 - g1) * t, b1 + (b2 - b1) * t);
+}
+
+/** hex → "r, g, b" for rgba() use in CSS custom properties. */
+function rgbList(hex) {
+  return hexToRgb(hex).join(', ');
+}
+
+function rgba(hex, alpha) {
+  return `rgba(${rgbList(hex)}, ${alpha})`;
+}
+
+/** hsl (deg, 0-100, 0-100) → hex, so PARTY mode can feed the same pipeline. */
+export function hslToHex(h, s, l) {
+  s /= 100;
+  l /= 100;
+  const k = (n) => (n + h / 30) % 12;
+  const a = s * Math.min(l, 1 - l);
+  const f = (n) =>
+    l - a * Math.max(-1, Math.min(k(n) - 3, Math.min(9 - k(n), 1)));
+  return rgbToHex(f(0) * 255, f(8) * 255, f(4) * 255);
+}
+
+/* ------------------------------------------------------------------ */
+/* derive a full paint set from a compact spec                         */
+/* ------------------------------------------------------------------ */
+
+function derive(spec) {
+  const light = spec.mode === 'light';
+  const { paper, ink, primary, secondary } = spec;
+
+  // Card surfaces are translucent so the fluid background drifts *through*
+  // them (with backdrop-blur) instead of being hidden behind opaque sheets —
+  // but opaque enough that text contrast is measured against a stable value.
+  const panelBase = light ? mix(paper, '#ffffff', 0.62) : mix(paper, '#ffffff', 0.055);
+  const panel = rgba(panelBase, light ? 0.78 : 0.8);
+  const blobs = spec.blobs || [primary, secondary, primary, secondary, ink];
+
+  return {
+    ...spec,
+    light,
+    panel,
+    panelSolid: panelBase,
+    // Tuned so every mood clears WCAG AA: ink ≥ 7:1, soft ≥ 4.5:1 and even
+    // the faintest meta text ≥ 4.5:1 against its own paper.
+    inkSoft: mix(ink, paper, light ? 0.26 : 0.22),
+    inkFaint: mix(ink, paper, light ? 0.34 : 0.4),
+    line: rgba(ink, light ? 0.15 : 0.2),
+    lineStrong: rgba(ink, light ? 0.3 : 0.38),
+    tint: light ? rgba(ink, 0.045) : 'rgba(255,255,255,0.055)',
+    navBg: rgba(paper, light ? 0.82 : 0.6),
+    navBgScrolled: rgba(paper, light ? 0.95 : 0.88),
+    // Canvas fluids: lighter alpha on paper so the ink stays readable.
+    blobAlpha: light ? 0.17 : 0.34,
+    blobComposite: light ? 'source-over' : 'lighter',
+    blobRgb: blobs.map(hexToRgb),
+    primaryRgb: hexToRgb(primary),
+    secondaryRgb: hexToRgb(secondary),
+    paperRgb: hexToRgb(paper),
+    inkRgb: hexToRgb(ink),
+  };
+}
+
+/* ------------------------------------------------------------------ */
+/* the six moods                                                       */
+/* ------------------------------------------------------------------ */
+
+const specs = {
+  scholar: {
+    key: 'scholar',
+    label: 'Scholar',
+    emoji: '📖',
+    mode: 'light',
+    paper: '#f6f2e9', // laid paper
+    ink: '#1c2433', // fountain-pen ink
+    primary: '#1d4ed8', // faculty blue
+    secondary: '#b45309', // leather amber
+    blobs: ['#1d4ed8', '#b45309', '#7c9fd8', '#d8b26a', '#8a94a6'],
+  },
+  blackboard: {
+    key: 'blackboard',
+    label: 'Blackboard',
+    emoji: '✏️',
+    mode: 'dark',
+    paper: '#1e2f27', // slate green
+    ink: '#eef4ee', // chalk white
+    primary: '#f2d16b', // chalk yellow
+    secondary: '#86b8d8', // chalk blue
+    blobs: ['#f2d16b', '#86b8d8', '#eef4ee', '#9fbf9f', '#f2d16b'],
+  },
+  ivy: {
+    key: 'ivy',
+    label: 'Ivy',
+    emoji: '🌿',
+    mode: 'dark',
+    paper: '#101f17', // deep quad green
+    ink: '#eaf2e6',
+    primary: '#c9a227', // old gold
+    secondary: '#7fb069', // ivy leaf
+    blobs: ['#c9a227', '#7fb069', '#3f6b4a', '#e0d3a1', '#c9a227'],
+  },
+  meridian: {
+    key: 'meridian',
+    label: 'Meridian',
+    emoji: '🧭',
+    mode: 'dark',
+    paper: '#0c1a30', // midnight navy
+    ink: '#e9f0fb',
+    primary: '#e0b64c', // meridian gold
+    secondary: '#6f9fe0', // atlas blue
+    blobs: ['#e0b64c', '#6f9fe0', '#2c4a78', '#f0e2b6', '#e0b64c'],
+  },
+  archive: {
+    key: 'archive',
+    label: 'Archive',
+    emoji: '📜',
+    mode: 'dark',
+    paper: '#241a12', // dark sepia
+    ink: '#f2e6d4',
+    primary: '#d9a566', // foxed parchment
+    secondary: '#a9743f', // binding brown
+    blobs: ['#d9a566', '#a9743f', '#6b4f33', '#e8d5b0', '#d9a566'],
+  },
+  convocation: {
+    key: 'convocation',
+    label: 'Convocation',
+    emoji: '🎓',
+    mode: 'dark',
+    paper: '#2b0f16', // ceremonial maroon
+    ink: '#f8ecea',
+    primary: '#e3c14a', // convocation gold
+    secondary: '#a83a52', // robe maroon
+    blobs: ['#e3c14a', '#a83a52', '#6d2233', '#f4e3b0', '#e3c14a'],
+  },
+};
+
+export const themes = Object.fromEntries(
+  Object.entries(specs).map(([k, s]) => [k, derive(s)])
+);
+
+// PARTY base: lights down, disco up. Derived once, recoloured every tick.
+const partyBase = derive({
+  key: 'party',
+  label: 'Convocation Disco',
+  emoji: '🪩',
+  mode: 'dark',
+  paper: '#14101c',
+  ink: '#f7f3ff',
+  primary: '#ff4fd8',
+  secondary: '#4fd8ff',
+  blobs: ['#ff4fd8', '#4fd8ff', '#ffe14f', '#7dff9b', '#ff8a4f'],
+});
+
+let currentKey = 'scholar';
+let party = { active: false, hue: 0, timer: null, confettiTimer: null };
+let partyTheme = { ...partyBase };
+
+/* ------------------------------------------------------------------ */
+/* seasonal auto-detect (academic calendar)                            */
+/* ------------------------------------------------------------------ */
+
+export function getSeasonalKey() {
+  const now = new Date();
+  const m = now.getMonth(); // 0 = January
+  const d = now.getDate();
+
+  // Ceremonial window straddling the new year.
+  if ((m === 11 && d >= 15) || (m === 0 && d <= 5)) return 'convocation';
+  // New academic year: the flagship light theme.
+  if (m === 8 || m === 9) return 'scholar';
+  // Late autumn into early winter.
+  if (m === 10 || (m === 11 && d < 15)) return 'meridian';
+  // Exam-and-records season.
+  if (m === 0 || m === 1) return 'archive';
+  // Spring term, the quad greens up.
+  if (m >= 2 && m <= 4) return 'ivy';
+  // Summer school: chalk dust.
+  return 'blackboard';
+}
+
+/* ------------------------------------------------------------------ */
+/* painting                                                            */
+/* ------------------------------------------------------------------ */
+
+function setVars(t) {
+  const root = document.documentElement;
+  const set = (name, value) => root.style.setProperty(name, value);
+
+  root.dataset.mode = t.mode;
+  root.dataset.theme = t.key;
+
+  set('--paper', t.paper);
+  set('--paper-rgb', t.paperRgb.join(', '));
+  set('--panel', t.panel);
+  set('--ink', t.ink);
+  set('--ink-soft', t.inkSoft);
+  set('--ink-faint', t.inkFaint);
+  set('--primary', t.primary);
+  set('--primary-rgb', t.primaryRgb.join(', '));
+  set('--secondary', t.secondary);
+  set('--secondary-rgb', t.secondaryRgb.join(', '));
+  set('--line', t.line);
+  set('--line-strong', t.lineStrong);
+  set('--tint', t.tint);
+  set('--nav-bg', t.navBg);
+  set('--nav-bg-scrolled', t.navBgScrolled);
+  set('--glass-border', rgba(t.primary, 0.38));
+  set('--glass-shadow', rgba(t.primary, 0.16));
+  set('--blob-alpha', String(t.blobAlpha));
+
+  const meta = document.querySelector('meta[name="theme-color"]');
+  if (meta) meta.setAttribute('content', t.paper);
+
   const glow1 = document.getElementById('hero-glow-1');
   const glow2 = document.getElementById('hero-glow-2');
-  if (glow1) glow1.style.backgroundColor = theme.primary;
-  if (glow2) glow2.style.backgroundColor = theme.secondary;
+  if (glow1) glow1.style.backgroundColor = t.primary;
+  if (glow2) glow2.style.backgroundColor = t.secondary;
+}
 
+function paintBadge(t, suffix = '') {
   const badge = document.getElementById('season-badge');
-  if (badge) {
-    badge.innerHTML = badgeText;
-    badge.style.borderColor = theme.primary;
-    badge.style.color = theme.primary;
-    badge.style.backgroundColor = `rgba(${pr}, ${pg}, ${pb}, 0.08)`;
-  }
+  if (!badge) return;
+  badge.innerHTML = `${t.emoji} &nbsp;${t.label} Mode${suffix}`;
+  badge.style.borderColor = rgba(t.primary, 0.5);
+  badge.style.color = t.primary;
+  badge.style.backgroundColor = rgba(t.primary, t.light ? 0.1 : 0.14);
+}
+
+function paintSwitcher() {
   document.querySelectorAll('.theme-btn').forEach((btn) => {
-    btn.classList.toggle('active', btn.dataset.themeKey === currentKey && !party.active);
+    btn.classList.toggle(
+      'active',
+      btn.dataset.themeKey === currentKey && !party.active
+    );
   });
+}
+
+function paintFooter(t) {
   const foot = document.getElementById('theme-name-foot');
-  if (foot) foot.textContent = party.active ? 'Party' : theme.label;
+  if (foot) foot.textContent = party.active ? 'Party' : t.label;
 }
 
 export function getCurrentTheme() {
-  if (party.active) {
-    const h = party.hue;
-    return {
-      ...themes[currentKey],
-      primary: `hsl(${h}, 100%, 60%)`,
-      secondary: `hsl(${(h + 70) % 360}, 100%, 60%)`,
-      node: `hsla(${h}, 100%, 65%, 0.4)`,
-      pulse: `hsl(${(h + 140) % 360}, 100%, 65%)`,
-    };
-  }
-  return themes[currentKey];
+  return party.active ? partyTheme : themes[currentKey];
 }
 
 export function applyTheme(key, { persist = true } = {}) {
   if (!themes[key]) return false;
   stopParty();
   currentKey = key;
-  const theme = themes[key];
-  paint(theme, `${theme.emoji} &nbsp;${theme.label} Mode`);
+  const t = themes[key];
+  setVars(t);
+  paintBadge(t);
+  paintSwitcher();
+  paintFooter(t);
   if (persist) {
     try {
       localStorage.setItem(STORAGE_KEY, key);
@@ -170,35 +331,42 @@ export function toggleParty() {
   }
   party.active = true;
   party.hue = Math.floor(Math.random() * 360);
-  const root = document.documentElement;
+  recolorParty();
+
   party.timer = setInterval(() => {
     party.hue = (party.hue + 6) % 360;
-    const p = `hsl(${party.hue}, 100%, 60%)`;
-    const s = `hsl(${(party.hue + 70) % 360}, 100%, 62%)`;
-    root.style.setProperty('--primary', p);
-    root.style.setProperty('--secondary', s);
-    const badge = document.getElementById('season-badge');
-    if (badge) {
-      badge.innerHTML = `🪩 &nbsp;PARTY MODE · hue ${party.hue}°`;
-      badge.style.borderColor = p;
-      badge.style.color = p;
-    }
-    const glow1 = document.getElementById('hero-glow-1');
-    const glow2 = document.getElementById('hero-glow-2');
-    if (glow1) glow1.style.backgroundColor = p;
-    if (glow2) glow2.style.backgroundColor = s;
+    recolorParty();
   }, 90);
+
   party.confettiTimer = setInterval(() => {
     window.dispatchEvent(
-      new CustomEvent('nlanding:confetti', {
-        detail: { n: 24, spread: true },
-      })
+      new CustomEvent('nlanding:confetti', { detail: { n: 24, spread: true } })
     );
   }, 1400);
-  document.querySelectorAll('.theme-btn').forEach((b) => b.classList.remove('active'));
+
+  paintSwitcher();
   const foot = document.getElementById('theme-name-foot');
   if (foot) foot.textContent = 'Party';
   return true;
+}
+
+function recolorParty() {
+  const h = party.hue;
+  const primary = hslToHex(h, 95, 62);
+  const secondary = hslToHex((h + 70) % 360, 95, 64);
+  const blobs = [0, 70, 140, 210, 280].map((off) =>
+    hexToRgb(hslToHex((h + off) % 360, 92, 62))
+  );
+
+  partyTheme = { ...partyBase, primary, secondary, primaryRgb: hexToRgb(primary), secondaryRgb: hexToRgb(secondary), blobRgb: blobs };
+
+  setVars(partyTheme);
+  const badge = document.getElementById('season-badge');
+  if (badge) {
+    badge.innerHTML = `🪩 &nbsp;PARTY MODE · hue ${h}°`;
+    badge.style.borderColor = primary;
+    badge.style.color = primary;
+  }
 }
 
 function stopParty() {
@@ -211,11 +379,14 @@ function stopParty() {
 
 export function initThemeSwitcher(container) {
   if (!container) return;
+  container.innerHTML = '';
+
   themeOrder.forEach((key) => {
     const t = themes[key];
     const btn = document.createElement('button');
     btn.className = 'theme-btn';
     btn.dataset.themeKey = key;
+    btn.type = 'button';
     btn.title = `${t.emoji} ${t.label}`;
     btn.setAttribute('aria-label', `Switch to ${t.label} theme`);
     btn.style.background = `linear-gradient(135deg, ${t.primary} 50%, ${t.secondary} 50%)`;
@@ -230,21 +401,19 @@ export function initThemeSwitcher(container) {
     container.appendChild(btn);
   });
 
-  // Restore saved theme, otherwise follow the season.
+  // Restore saved mood, otherwise follow the academic calendar.
   let saved = null;
   try {
     saved = localStorage.getItem(STORAGE_KEY);
   } catch {
     /* ignore */
   }
-  const initial = saved && themes[saved] ? saved : getSeasonalKey();
-  currentKey = initial;
-  const theme = themes[initial];
   const auto = !saved || !themes[saved];
-  paint(
-    theme,
-    auto
-      ? `${theme.emoji} &nbsp;${theme.label} Mode · auto`
-      : `${theme.emoji} &nbsp;${theme.label} Mode`
-  );
+  currentKey = auto ? getSeasonalKey() : saved;
+
+  const t = themes[currentKey];
+  setVars(t);
+  paintBadge(t, auto ? ' · auto' : '');
+  paintSwitcher();
+  paintFooter(t);
 }

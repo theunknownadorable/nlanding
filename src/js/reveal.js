@@ -1,6 +1,24 @@
 // Scroll reveals, animated counters, and skill-bar fills.
+//
+// Under `prefers-reduced-motion` the CSS already cancels the reveal
+// transforms; this module also lands counters and skill bars on their final
+// values immediately instead of tweening, so the page holds genuinely still.
+
+const reducedMotion =
+  typeof matchMedia !== 'undefined' &&
+  matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+function finalCounter(el) {
+  const target = parseFloat(el.dataset.target || '0');
+  const suffix = el.dataset.suffix || '';
+  el.textContent = Math.round(target) + suffix;
+}
 
 function animateCounter(el) {
+  if (reducedMotion) {
+    finalCounter(el);
+    return;
+  }
   const target = parseFloat(el.dataset.target || '0');
   const suffix = el.dataset.suffix || '';
   const dur = 1400;
@@ -53,9 +71,13 @@ export function initReveal() {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           const fill = entry.target;
-          requestAnimationFrame(() => {
+          if (reducedMotion) {
             fill.style.width = `${fill.dataset.level}%`;
-          });
+          } else {
+            requestAnimationFrame(() => {
+              fill.style.width = `${fill.dataset.level}%`;
+            });
+          }
           barObs.unobserve(fill);
         }
       });

@@ -1,18 +1,18 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en" class="scroll-smooth" data-mode="light" data-theme="scholar">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Abhishek S. — AI/ML × Playful Engineer</title>
-  <meta name="description" content="Abhishek S. — AI/ML enthusiast, robot befriender, and builder of playful things. Landing page v2: neon, interactive, and hiding at least one secret game." />
-  <meta name="theme-color" content="#050508" />
+  <title>Abhishek S. — Assistant Professor · AI/ML</title>
+  <meta name="description" content="Abhishek S. — Assistant Professor of Computer Science & Engineering at TKMIT, working on machine unlearning, SISA and educational robotics. Office hours are open; there is also a secret chalkboard game." />
+  <meta name="theme-color" content="#f6f2e9" />
   <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
-  <meta property="og:title" content="Abhishek S. — AI/ML × Playful Engineer" />
-  <meta property="og:description" content="Neon-soaked interactive landing page. Press Ctrl+K. Thank me later." />
+  <meta property="og:title" content="Abhishek S. — Assistant Professor · AI/ML" />
+  <meta property="og:description" content="Laid paper, fountain-pen ink, six academic moods and a secret game called Grade Rush. Press Ctrl+K." />
   <meta property="og:type" content="website" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800;900&family=Rajdhani:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,400;1,9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet" />
 </head>
 <body class="font-body antialiased">
@@ -26,40 +26,45 @@
   <div id="scroll-progress"></div>
 
   <!-- ================= NAV ================= -->
-  <nav id="navbar" class="fixed w-full z-50 border-b border-white/10" style="background: rgba(5,5,12,.35); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);">
+  <nav id="navbar" class="fixed w-full z-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex items-center justify-between h-16">
-        <a href="#home" class="font-display text-xl md:text-2xl font-bold gradient-text tracking-wider">ABHISHEK&nbsp;S.</a>
-        <div class="hidden md:flex items-center space-x-1 text-[15px] font-semibold">
+        <a href="#home" class="flex items-baseline gap-2">
+          <span class="font-display text-xl md:text-2xl font-bold gradient-text tracking-tight">Abhishek&nbsp;S.</span>
+          <span class="hidden sm:inline font-mono text-[10px] tracking-[0.2em] uppercase txt-faint">TKMIT · CSE</span>
+        </a>
+        <div class="hidden lg:flex items-center space-x-1 text-[15px] font-semibold">
           <a href="#about" class="nav-link px-3 py-2 rounded-md">About</a>
           <a href="#skills" class="nav-link px-3 py-2 rounded-md">Skills</a>
           <a href="#projects" class="nav-link px-3 py-2 rounded-md">Projects</a>
+          <a href="#academia" class="nav-link px-3 py-2 rounded-md">Academia</a>
           <a href="#journey" class="nav-link px-3 py-2 rounded-md">Journey</a>
           <a href="#playground" class="nav-link px-3 py-2 rounded-md">Playground</a>
           <a href="#contact" class="nav-link px-3 py-2 rounded-md">Contact</a>
         </div>
         <div class="flex items-center gap-3">
-          <div class="theme-switcher hidden lg:flex items-center gap-1.5" title="Site mood"></div>
-          <button data-palette-open class="hidden sm:flex items-center gap-2 text-xs font-mono px-3 py-1.5 rounded-lg border border-white/15 text-gray-400 hover:text-white hover:border-white/40 transition-colors" title="Command palette">
+          <div class="theme-switcher hidden xl:flex items-center gap-1.5" title="Site mood"></div>
+          <button data-palette-open class="hidden sm:flex items-center gap-2 text-xs font-mono px-3 py-1.5 rounded-lg btn-ghost" title="Command palette">
             <i class="fas fa-terminal"></i>
-            <span class="px-1.5 py-0.5 rounded bg-white/10 text-[10px]">ctrl K</span>
+            <span class="px-1.5 py-0.5 rounded tint text-[10px]">ctrl K</span>
           </button>
-          <button id="menu-btn" class="md:hidden p-2 rounded-md text-gray-300 hover:text-white hover:bg-white/10" aria-label="Open menu" aria-expanded="false">
+          <button id="menu-btn" class="lg:hidden p-2 rounded-md tint txt-soft transition-opacity hover:opacity-70" aria-label="Open menu" aria-expanded="false">
             <i class="fas fa-bars text-xl"></i>
           </button>
         </div>
       </div>
     </div>
-    <div id="mobile-menu" class="hidden md:hidden border-t border-white/10" style="background: rgba(5,5,12,.95);">
+    <div id="mobile-menu" class="hidden lg:hidden">
       <div class="px-4 pt-2 pb-4 space-y-1 font-semibold">
-        <a href="#about" class="block px-3 py-2 rounded-md text-gray-300 hover:text-white hover:bg-white/5">About</a>
-        <a href="#skills" class="block px-3 py-2 rounded-md text-gray-300 hover:text-white hover:bg-white/5">Skills</a>
-        <a href="#projects" class="block px-3 py-2 rounded-md text-gray-300 hover:text-white hover:bg-white/5">Projects</a>
-        <a href="#journey" class="block px-3 py-2 rounded-md text-gray-300 hover:text-white hover:bg-white/5">Journey</a>
-        <a href="#playground" class="block px-3 py-2 rounded-md text-gray-300 hover:text-white hover:bg-white/5">Playground</a>
-        <a href="#contact" class="block px-3 py-2 rounded-md text-gray-300 hover:text-white hover:bg-white/5">Contact</a>
-        <button data-palette-open class="w-full text-left px-3 py-2 rounded-md text-gray-300 hover:text-white hover:bg-white/5">
-          <i class="fas fa-terminal mr-2"></i>Command palette <span class="font-mono text-xs text-gray-500">(ctrl K)</span>
+        <a href="#about" class="block px-3 py-2 rounded-md">About</a>
+        <a href="#skills" class="block px-3 py-2 rounded-md">Skills</a>
+        <a href="#projects" class="block px-3 py-2 rounded-md">Projects</a>
+        <a href="#academia" class="block px-3 py-2 rounded-md">Academia</a>
+        <a href="#journey" class="block px-3 py-2 rounded-md">Journey</a>
+        <a href="#playground" class="block px-3 py-2 rounded-md">Playground</a>
+        <a href="#contact" class="block px-3 py-2 rounded-md">Contact</a>
+        <button data-palette-open class="w-full text-left px-3 py-2 rounded-md">
+          <i class="fas fa-terminal mr-2"></i>Command palette <span class="font-mono text-xs txt-faint">(ctrl K)</span>
         </button>
       </div>
     </div>
@@ -70,57 +75,70 @@
     <div class="grid-bg absolute inset-0 pointer-events-none"></div>
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-14 items-center relative z-10 w-full">
       <div class="space-y-6">
-        <div id="season-badge" class="inline-block px-4 py-1.5 border rounded-full text-sm tracking-widest font-semibold">🌆 Cyberpunk Mode</div>
-        <h1 class="font-display text-5xl sm:text-6xl xl:text-7xl font-black leading-[1.05]">
+        <div id="season-badge" class="inline-block px-4 py-1.5 rounded-full text-sm tracking-widest font-semibold">📖 Scholar Mode</div>
+        <h1 class="font-display text-5xl sm:text-6xl xl:text-7xl font-black leading-[1.03] tracking-tight">
           Hello, I'm<br />
-          <span class="gradient-text text-glow">Abhishek S.</span>
+          <span class="gradient-text">Abhishek S.</span>
         </h1>
-        <h2 class="font-display text-xl sm:text-2xl xl:text-3xl font-bold text-gray-200 h-10">
+        <h2 class="font-display text-xl sm:text-2xl xl:text-3xl font-semibold txt-soft h-10">
           <span id="typewriter"></span><span class="type-caret"></span>
         </h2>
-        <p class="text-gray-400 text-lg xl:text-xl max-w-lg leading-relaxed font-medium">
-          Exploring the boundaries of Artificial Intelligence and Robotics —
-          from <span class="text-white font-semibold">TKM College of Engineering</span> to wherever
-          the neural nets take me.
+        <p class="txt-soft text-lg xl:text-xl max-w-lg leading-relaxed">
+          <span class="txt-strong">Assistant Professor</span> of Computer Science &amp; Engineering at
+          <span class="font-semibold" style="color: var(--secondary)">TKM Institute of Technology</span> —
+          teaching machines to learn, and occasionally to forget. Research in
+          <span class="txt-strong">machine unlearning</span>, SISA and educational robotics.
         </p>
         <div class="flex flex-wrap gap-4 pt-2">
-          <a href="#projects" class="btn-primary px-8 py-3.5 rounded-md font-display text-sm">VIEW WORK</a>
-          <a href="#contact" class="btn-ghost px-8 py-3.5 rounded-md font-display text-sm">CONTACT ME</a>
+          <a href="#projects" class="btn-primary px-7 py-3.5 rounded-md font-display text-sm">VIEW WORK</a>
+          <a href="#academia" class="btn-ghost px-7 py-3.5 rounded-md font-display text-sm">OFFICE HOURS</a>
+          <a href="https://tkmit.ac.in/wp_department/computer-science-engineering/" target="_blank" rel="noopener" class="btn-ghost px-7 py-3.5 rounded-md font-display text-sm">
+            TKMIT&nbsp;<i class="fas fa-arrow-up-right-from-square text-xs"></i>
+          </a>
         </div>
-        <p class="font-mono text-xs text-gray-500 pt-1">
-          <span style="color: var(--primary)">▸</span> psst… my photo hides a secret <span class="text-gray-300">(tap it 5×)</span> · press <button data-palette-open class="underline decoration-dotted hover:text-white">ctrl K</button> for magic
+        <p class="font-mono text-xs txt-faint pt-1">
+          <span style="color: var(--primary)">▸</span> psst… the polaroid hides a secret <span class="txt-soft">(tap it 5×)</span> · press <button data-palette-open class="underline decoration-dotted hover-ink transition-colors">ctrl K</button> for magic
         </p>
       </div>
 
       <div class="flex justify-center animate-floaty">
-        <div id="brain-trigger" data-tilt="7" class="brain-trigger relative w-72 h-72 sm:w-80 sm:h-80" title="definitely just a normal photo">
-          <div id="hero-glow-1" class="absolute -inset-3 rounded-3xl opacity-25 blur-3xl transition-colors duration-1000"></div>
-          <div id="hero-glow-2" class="absolute inset-6 rounded-full opacity-25 blur-2xl transition-colors duration-1000"></div>
-          <div class="glass glass-hover w-full h-full rounded-2xl relative overflow-hidden group">
-            <img src="./abhi.jpg" alt="Abhishek S." class="w-full h-full object-cover opacity-90 transition-all duration-500 group-hover:scale-105 grayscale group-hover:grayscale-0" />
-            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none"></div>
-            <div class="absolute bottom-3 left-4 font-mono text-[11px] tracking-widest text-gray-300/90">SYS.CANDIDATE // v2.0</div>
-            <div class="absolute top-3 right-4 flex items-center gap-1.5 font-mono text-[11px] text-green-300"><span class="w-2 h-2 rounded-full bg-green-400 pulse-dot"></span>ONLINE</div>
+        <div id="brain-trigger" class="brain-trigger relative w-[19rem] sm:w-[22rem]" title="definitely just a normal photograph">
+          <div id="hero-glow-1" class="absolute -inset-6 rounded-full opacity-20 blur-3xl transition-colors duration-1000"></div>
+          <div id="hero-glow-2" class="absolute inset-10 rounded-full opacity-20 blur-2xl transition-colors duration-1000"></div>
+
+          <div class="polaroid relative" data-tilt="5">
+            <span class="tape tape-tl" aria-hidden="true"></span>
+            <span class="tape tape-br" aria-hidden="true"></span>
+            <div class="polaroid-figure aspect-square">
+              <img src="./abhi.jpg" alt="Abhishek S., Assistant Professor at TKMIT" class="w-full h-full object-cover" />
+              <div class="absolute inset-x-0 bottom-0 h-14 bg-gradient-to-t from-black/70 to-transparent pointer-events-none"></div>
+              <div class="absolute bottom-2 left-3 font-mono text-[10px] tracking-[0.18em] text-white/85">SYS.FACULTY // v2.1</div>
+              <div class="absolute top-2 right-3 flex items-center gap-1.5 font-mono text-[10px] text-green-200">
+                <span class="w-2 h-2 rounded-full bg-green-400 pulse-dot"></span>ONLINE
+              </div>
+            </div>
+            <div class="polaroid-caption">TKMIT · CSE · office hours open</div>
           </div>
-          <div class="absolute -top-5 -right-4 glass px-4 py-2 rounded-lg text-sm font-bold shadow-lg animate-bounce hidden sm:block" style="animation-duration: 3s; border-color: var(--primary); color: var(--primary);">
-            <i class="fab fa-python mr-2"></i>Python Wrangler
+
+          <div class="hero-pin absolute -top-6 -right-3 px-4 py-2 rounded-lg text-sm font-bold shadow-lg animate-bounce hidden sm:block" style="animation-duration: 3.4s; color: var(--primary);">
+            <i class="fas fa-chalkboard-user mr-2"></i>Assistant Professor
           </div>
-          <div class="absolute -bottom-5 -left-4 glass px-4 py-2 rounded-lg text-sm font-bold shadow-lg animate-bounce hidden sm:block" style="animation-duration: 4s; border-color: var(--secondary); color: var(--secondary);">
-            <i class="fas fa-robot mr-2"></i>Robot Befriender
+          <div class="hero-pin absolute -bottom-4 -left-3 px-4 py-2 rounded-lg text-sm font-bold shadow-lg animate-bounce hidden sm:block" style="animation-duration: 4.4s; color: var(--secondary);">
+            <i class="fas fa-eraser mr-2"></i>Machine Unlearning
           </div>
         </div>
       </div>
     </div>
-    <a href="#about" aria-label="Scroll to about" class="absolute bottom-6 left-1/2 -translate-x-1/2 text-gray-500 hover:text-white transition-colors animate-bounce">
+    <a href="#about" aria-label="Scroll to about" class="absolute bottom-6 left-1/2 -translate-x-1/2 txt-faint hover-ink transition-colors animate-bounce">
       <i class="fas fa-chevron-down text-2xl"></i>
     </a>
   </section>
 
   <!-- ================= MARQUEE ================= -->
-  <div class="marquee border-y border-white/10 py-4 font-display text-sm tracking-[0.3em] text-gray-400 select-none" aria-hidden="true">
+  <div class="marquee border-y py-4 font-display text-sm tracking-[0.28em] select-none" aria-hidden="true">
     <div class="marquee-track">
-      <span>PYTHON ✦ PYTORCH ✦ TENSORFLOW ✦ ROBOTICS ✦ MACHINE UNLEARNING ✦ MEDIBOT ✦ FLASK ✦ DJANGO ✦ NEURAL NETS ✦ RFA ROBOT ✦&nbsp;</span>
-      <span>PYTHON ✦ PYTORCH ✦ TENSORFLOW ✦ ROBOTICS ✦ MACHINE UNLEARNING ✦ MEDIBOT ✦ FLASK ✦ DJANGO ✦ NEURAL NETS ✦ RFA ROBOT ✦&nbsp;</span>
+      <span>ASSISTANT PROFESSOR ✦ MACHINE UNLEARNING ✦ SISA ✦ COMPUTER VISION ✦ PYTORCH ✦ TENSORFLOW ✦ OFFICE HOURS ✦ TKMIT ✦ EDUCATIONAL ROBOTICS ✦ MEDIBOT ✦ LATEX ✦&nbsp;</span>
+      <span>ASSISTANT PROFESSOR ✦ MACHINE UNLEARNING ✦ SISA ✦ COMPUTER VISION ✦ PYTORCH ✦ TENSORFLOW ✦ OFFICE HOURS ✦ TKMIT ✦ EDUCATIONAL ROBOTICS ✦ MEDIBOT ✦ LATEX ✦&nbsp;</span>
     </div>
   </div>
 
@@ -128,32 +146,47 @@
   <section id="about" class="py-24 scroll-mt-16 relative z-10">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
       <p class="kicker reveal">// 01 · about</p>
-      <div class="glass glass-hover rounded-2xl p-8 md:p-12 mt-4 relative overflow-hidden reveal">
+      <div class="card card-hover rounded-2xl p-8 md:p-12 mt-4 relative overflow-hidden reveal">
         <div class="absolute top-0 right-0 p-6 opacity-10 pointer-events-none">
-          <i class="fas fa-user-astronaut text-9xl text-white"></i>
+          <i class="fas fa-user-graduate text-9xl" style="color: var(--ink)"></i>
         </div>
         <h2 class="font-display text-3xl md:text-4xl font-bold mb-6 flex items-center">
           <span class="w-2 h-9 mr-4 rounded-sm" style="background-color: var(--primary)"></span>
           About Me
         </h2>
-        <div class="text-gray-300 text-lg font-medium tracking-wide leading-relaxed space-y-4">
+        <div class="txt-soft text-lg leading-relaxed space-y-4">
           <p>
-            I'm a passionate <span class="font-bold" style="color: var(--primary)">AI/ML enthusiast</span>
-            dedicated to exploring the frontiers of artificial intelligence. With a strong command of
-            <span class="text-white font-semibold">Python and C</span>, I've shipped work across
-            diagnostics, research, and robotics.
+            I'm an <span class="font-bold" style="color: var(--primary)">Assistant Professor</span> in
+            Computer Science &amp; Engineering, and an <span class="txt-strong">AI/ML researcher</span> who
+            still writes more Python than prose. My work sits where theory meets a classroom full of
+            students who will absolutely ask <em>but why does it work?</em>
           </p>
           <p>
-            Currently pursuing my <span class="text-white font-semibold">Post-Graduation in Computer Science</span>
-            at <span class="font-semibold" style="color: var(--secondary)">TKM College of Engineering</span> —
-            bridging the gap between theoretical AI and real-world applications, one experiment at a time.
+            Post-graduate in Computer Science from
+            <span class="txt-strong">TKM College of Engineering</span>, now teaching at
+            <span class="font-semibold" style="color: var(--secondary)">TKM Institute of Technology</span>.
+            I research <span class="txt-strong">machine unlearning</span> and SISA — making models forget
+            specific data without retraining from scratch — and I build classroom robots that make
+            attendance feel like an experiment.
           </p>
         </div>
         <div class="mt-10 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-          <div><div class="font-display text-3xl font-bold" style="color: var(--primary)">PG</div><div class="text-xs text-gray-500 uppercase tracking-widest mt-1">Education</div></div>
-          <div><div class="font-display text-3xl font-bold counter" style="color: var(--secondary)" data-target="3" data-suffix="+">0</div><div class="text-xs text-gray-500 uppercase tracking-widest mt-1">Major Projects</div></div>
-          <div><div class="font-display text-3xl font-bold counter text-green-400" data-target="5" data-suffix="+">0</div><div class="text-xs text-gray-500 uppercase tracking-widest mt-1">Languages</div></div>
-          <div><div class="font-display text-3xl font-bold text-pink-400">∞</div><div class="text-xs text-gray-500 uppercase tracking-widest mt-1">Curiosity</div></div>
+          <div>
+            <div class="font-display text-3xl font-bold" style="color: var(--primary)">M.Tech</div>
+            <div class="text-xs txt-faint uppercase tracking-widest mt-1">Education</div>
+          </div>
+          <div>
+            <div class="font-display text-3xl font-bold counter" style="color: var(--secondary)" data-target="3" data-suffix="+">0</div>
+            <div class="text-xs txt-faint uppercase tracking-widest mt-1">Major Projects</div>
+          </div>
+          <div>
+            <div class="font-display text-3xl font-bold counter" style="color: #166534" data-target="5" data-suffix="+">0</div>
+            <div class="text-xs txt-faint uppercase tracking-widest mt-1">Languages</div>
+          </div>
+          <div>
+            <div class="font-display text-3xl font-bold" style="color: var(--primary)">∞</div>
+            <div class="text-xs txt-faint uppercase tracking-widest mt-1">Curiosity</div>
+          </div>
         </div>
       </div>
     </div>
@@ -165,8 +198,8 @@
       <p class="kicker text-center reveal">// 02 · skills</p>
       <h2 class="font-display text-3xl md:text-4xl font-bold mt-2 mb-12 text-center text-glow reveal">Technical Arsenal</h2>
       <div class="grid md:grid-cols-2 gap-8">
-        <div class="glass glass-hover p-6 md:p-8 rounded-2xl reveal">
-          <h3 class="font-display text-lg font-bold mb-6 border-b border-white/10 pb-3" style="color: var(--primary)">
+        <div class="card card-hover p-6 md:p-8 rounded-2xl reveal">
+          <h3 class="font-display text-lg font-bold mb-6 border-b pb-3 hairline" style="color: var(--primary)">
             <i class="fas fa-code mr-2"></i>Programming Languages
           </h3>
           <div class="space-y-5 font-semibold">
@@ -177,8 +210,8 @@
             <div><div class="flex justify-between mb-1.5"><span>LaTeX</span><span class="font-mono text-sm" style="color: var(--primary)">80%</span></div><div class="skill-track h-2.5"><div class="skill-fill" data-level="80"></div></div></div>
           </div>
         </div>
-        <div class="glass glass-hover p-6 md:p-8 rounded-2xl reveal" data-delay="120">
-          <h3 class="font-display text-lg font-bold mb-6 border-b border-white/10 pb-3" style="color: var(--secondary)">
+        <div class="card card-hover p-6 md:p-8 rounded-2xl reveal" data-delay="120">
+          <h3 class="font-display text-lg font-bold mb-6 border-b pb-3 hairline" style="color: var(--secondary)">
             <i class="fas fa-layer-group mr-2"></i>AI &amp; ML Frameworks
           </h3>
           <div class="flex flex-wrap gap-3 font-semibold">
@@ -189,13 +222,13 @@
             <span class="chip px-4 py-2 rounded-lg"><i class="fas fa-server mr-2"></i>XAMPP</span>
             <span class="chip px-4 py-2 rounded-lg"><i class="fas fa-robot mr-2"></i>Robotics</span>
           </div>
-          <div class="mt-8 p-5 bg-white/5 rounded-xl border-l-4" style="border-color: var(--secondary)">
-            <h4 class="font-display text-xs font-bold text-gray-300 uppercase tracking-widest mb-2">Focus Areas</h4>
-            <p class="text-gray-400 font-medium">Computer Vision · Natural Language Processing · Model Optimization · Selective Retraining</p>
+          <div class="mt-8 p-5 rounded-xl border-l-4 tint" style="border-color: var(--secondary)">
+            <h4 class="font-display text-xs font-bold uppercase tracking-widest mb-2 txt-soft">Research Focus</h4>
+            <p class="txt-soft">Machine Unlearning · Selective Retraining (SISA) · Computer Vision · NLP · Model Optimization</p>
           </div>
-          <div class="mt-5 p-5 bg-white/5 rounded-xl border-l-4" style="border-color: var(--primary)">
-            <h4 class="font-display text-xs font-bold text-gray-300 uppercase tracking-widest mb-2">Currently Learning</h4>
-            <p class="text-gray-400 font-medium">Making neural nets <em class="text-gray-200 not-italic font-semibold">forget</em> on purpose. (Yes, really. Ask me about SISA.)</p>
+          <div class="mt-5 p-5 rounded-xl border-l-4 tint" style="border-color: var(--primary)">
+            <h4 class="font-display text-xs font-bold uppercase tracking-widest mb-2 txt-soft">Currently Learning</h4>
+            <p class="txt-soft">Making neural nets <em class="txt-strong not-italic font-semibold">forget</em> on purpose. Yes, really — ask me about SISA, I have slides.</p>
           </div>
         </div>
       </div>
@@ -207,71 +240,167 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <p class="kicker text-center reveal">// 03 · projects</p>
       <h2 class="font-display text-3xl md:text-4xl font-bold mt-2 mb-4 text-center text-glow reveal">Featured Builds</h2>
-      <p class="text-center text-gray-500 font-mono text-sm mb-12 reveal">★ counts are live from GitHub · click any card to visit the repo</p>
+      <p class="text-center txt-faint font-mono text-sm mb-12 reveal">★ counts are live from GitHub · click any card to visit the repo</p>
       <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
 
-        <article class="project-card glass glass-hover rounded-2xl overflow-hidden reveal" data-tilt="6" tabindex="0" role="link" aria-label="MEDIBOT on GitHub" data-repo="theunknownadorable/docsim" data-href="https://github.com/theunknownadorable/docsim">
-          <div class="h-40 flex items-center justify-center relative overflow-hidden" style="background: radial-gradient(circle at center, rgba(var(--primary-rgb), .18) 0%, #0b0b14 75%)">
-            <i class="fas fa-user-md text-6xl transition-transform duration-500 group-hover:scale-110" style="color: var(--primary)"></i>
+        <article class="project-card card card-hover rounded-2xl overflow-hidden reveal" data-tilt="6" tabindex="0" role="link" aria-label="MEDIBOT on GitHub" data-repo="theunknownadorable/docsim" data-href="https://github.com/theunknownadorable/docsim">
+          <div class="card-art h-40 flex items-center justify-center relative overflow-hidden">
+            <i class="fas fa-user-doctor text-6xl" style="color: var(--primary)"></i>
           </div>
           <div class="p-5">
             <h3 class="font-display text-lg font-bold mb-1.5 flex items-center justify-between">MEDIBOT <span class="card-arrow">↗</span></h3>
-            <p class="text-gray-400 text-[15px] font-medium mb-3">Diagnostic assistant connecting students, doctors &amp; patients. Triage, minus the waiting room.</p>
+            <p class="txt-soft text-[15px] mb-3">Diagnostic assistant connecting students, doctors &amp; patients. Triage, minus the waiting room.</p>
             <div class="flex flex-wrap gap-2 mb-4 font-mono text-[11px]">
-              <span class="px-2 py-1 bg-white/10 rounded">Python</span>
-              <span class="px-2 py-1 bg-white/10 rounded">AI</span>
-              <span class="px-2 py-1 bg-white/10 rounded">Healthcare</span>
+              <span class="tag px-2 py-1 rounded">Python</span>
+              <span class="tag px-2 py-1 rounded">AI</span>
+              <span class="tag px-2 py-1 rounded">Healthcare</span>
             </div>
-            <div class="flex items-center gap-3 text-sm font-mono text-gray-400">
-              <span class="star-count opacity-40"><i class="fas fa-star"></i> —</span>
-              <span class="repo-lang hidden px-2 py-0.5 rounded bg-white/5 text-xs"></span>
+            <div class="flex items-center gap-3 text-sm font-mono txt-faint">
+              <span class="star-count opacity-50"><i class="fas fa-star"></i> —</span>
+              <span class="repo-lang hidden tag px-2 py-0.5 rounded text-xs"></span>
             </div>
           </div>
         </article>
 
-        <article class="project-card glass glass-hover rounded-2xl overflow-hidden reveal" data-tilt="6" data-delay="100" tabindex="0" role="link" aria-label="Machine Unlearning on GitHub" data-repo="theunknownadorable/machine-unlearning" data-href="https://github.com/theunknownadorable/machine-unlearning">
-          <div class="h-40 flex items-center justify-center relative overflow-hidden" style="background: radial-gradient(circle at center, rgba(var(--secondary-rgb), .18) 0%, #0b0b14 75%)">
+        <article class="project-card card card-hover rounded-2xl overflow-hidden reveal" data-tilt="6" data-delay="100" tabindex="0" role="link" aria-label="Machine Unlearning on GitHub" data-repo="theunknownadorable/machine-unlearning" data-href="https://github.com/theunknownadorable/machine-unlearning">
+          <div class="card-art h-40 flex items-center justify-center relative overflow-hidden">
             <i class="fas fa-eraser text-6xl" style="color: var(--secondary)"></i>
           </div>
           <div class="p-5">
             <h3 class="font-display text-lg font-bold mb-1.5 flex items-center justify-between">Machine Unlearning <span class="card-arrow">↗</span></h3>
-            <p class="text-gray-400 text-[15px] font-medium mb-3">Selective retraining via SISA architecture — teaching models to forget, efficiently.</p>
+            <p class="txt-soft text-[15px] mb-3">Selective retraining via SISA architecture — teaching models to forget, efficiently.</p>
             <div class="flex flex-wrap gap-2 mb-4 font-mono text-[11px]">
-              <span class="px-2 py-1 bg-white/10 rounded">PyTorch</span>
-              <span class="px-2 py-1 bg-white/10 rounded">Research</span>
-              <span class="px-2 py-1 bg-white/10 rounded">SISA</span>
+              <span class="tag px-2 py-1 rounded">PyTorch</span>
+              <span class="tag px-2 py-1 rounded">Research</span>
+              <span class="tag px-2 py-1 rounded">SISA</span>
             </div>
-            <div class="flex items-center gap-3 text-sm font-mono text-gray-400">
-              <span class="star-count opacity-40"><i class="fas fa-star"></i> —</span>
-              <span class="repo-lang hidden px-2 py-0.5 rounded bg-white/5 text-xs"></span>
+            <div class="flex items-center gap-3 text-sm font-mono txt-faint">
+              <span class="star-count opacity-50"><i class="fas fa-star"></i> —</span>
+              <span class="repo-lang hidden tag px-2 py-0.5 rounded text-xs"></span>
             </div>
           </div>
         </article>
 
-        <article class="project-card glass glass-hover rounded-2xl overflow-hidden reveal" data-tilt="6" data-delay="200" tabindex="0" role="link" aria-label="RFA Robot on GitHub" data-repo="theunknownadorable/RFA" data-href="https://github.com/theunknownadorable/RFA">
-          <div class="h-40 flex items-center justify-center relative overflow-hidden" style="background: radial-gradient(circle at center, rgba(74, 222, 128, .16) 0%, #0b0b14 75%)">
-            <i class="fas fa-chalkboard-teacher text-6xl text-green-400"></i>
+        <article class="project-card card card-hover rounded-2xl overflow-hidden reveal" data-tilt="6" data-delay="200" tabindex="0" role="link" aria-label="RFA Robot on GitHub" data-repo="theunknownadorable/RFA" data-href="https://github.com/theunknownadorable/RFA">
+          <div class="card-art h-40 flex items-center justify-center relative overflow-hidden">
+            <i class="fas fa-chalkboard-user text-6xl" style="color: #166534"></i>
           </div>
           <div class="p-5">
             <h3 class="font-display text-lg font-bold mb-1.5 flex items-center justify-between">RFA Robot <span class="card-arrow">↗</span></h3>
-            <p class="text-gray-400 text-[15px] font-medium mb-3">Classroom assistant robot — basic interactions, attendance energy, zero chalk dust.</p>
+            <p class="txt-soft text-[15px] mb-3">Classroom assistant robot — basic interactions, attendance energy, zero chalk dust.</p>
             <div class="flex flex-wrap gap-2 mb-4 font-mono text-[11px]">
-              <span class="px-2 py-1 bg-white/10 rounded">Robotics</span>
-              <span class="px-2 py-1 bg-white/10 rounded">Embedded</span>
+              <span class="tag px-2 py-1 rounded">Robotics</span>
+              <span class="tag px-2 py-1 rounded">Embedded</span>
             </div>
-            <div class="flex items-center gap-3 text-sm font-mono text-gray-400">
-              <span class="star-count opacity-40"><i class="fas fa-star"></i> —</span>
-              <span class="repo-lang hidden px-2 py-0.5 rounded bg-white/5 text-xs"></span>
+            <div class="flex items-center gap-3 text-sm font-mono txt-faint">
+              <span class="star-count opacity-50"><i class="fas fa-star"></i> —</span>
+              <span class="repo-lang hidden tag px-2 py-0.5 rounded text-xs"></span>
             </div>
           </div>
         </article>
 
-        <a href="#contact" class="glass glass-hover rounded-2xl overflow-hidden reveal border-dashed flex flex-col items-center justify-center text-center p-6 min-h-[320px] group" data-delay="300" style="border-style: dashed;">
-          <div class="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl mb-4 transition-transform group-hover:scale-110 group-hover:rotate-6" style="background: rgba(var(--primary-rgb), .1); border: 1px solid var(--glass-border)">💡</div>
-          <h3 class="font-display text-lg font-bold mb-2">Your idea here</h3>
-          <p class="text-gray-400 text-[15px] font-medium mb-4">Got a wild AI/robotics idea? Let's over-engineer it together.</p>
+        <a href="#contact" class="card card-hover rounded-2xl overflow-hidden reveal flex flex-col items-center justify-center text-center p-6 min-h-[320px] group" data-delay="300" style="border-style: dashed;">
+          <div class="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl mb-4 transition-transform group-hover:scale-110 group-hover:rotate-6 tint" style="border: 1px solid var(--glass-border)">💡</div>
+          <h3 class="font-display text-lg font-bold mb-2">Your research here</h3>
+          <p class="txt-soft text-[15px] mb-4">A student project, a paper, an over-ambitious AI idea? Let's over-engineer it together.</p>
           <span class="font-display text-xs font-bold tracking-widest px-5 py-2.5 rounded-md btn-primary">START SOMETHING</span>
         </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= ACADEMIA ================= -->
+  <section id="academia" class="py-24 scroll-mt-16 relative z-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <p class="kicker text-center reveal">// 04 · academia</p>
+      <h2 class="font-display text-3xl md:text-4xl font-bold mt-2 mb-4 text-center text-glow reveal">Academia</h2>
+      <p class="text-center txt-soft max-w-2xl mx-auto mb-12 reveal">
+        The part of the page with a syllabus attached. Teaching, research, and where to find me
+        when the lab lights are still on.
+      </p>
+
+      <div class="grid lg:grid-cols-2 gap-8">
+        <!-- appointment -->
+        <div class="card card-hover rounded-2xl p-7 md:p-9 relative overflow-hidden reveal" data-tilt="4">
+          <div class="absolute top-5 right-5 stamp"><i class="fas fa-stamp"></i>Appointed</div>
+          <p class="font-mono text-[11px] tracking-[0.25em] uppercase mb-2" style="color: var(--secondary)">Current appointment</p>
+          <h3 class="font-display text-2xl md:text-3xl font-bold mb-1">Assistant Professor</h3>
+          <p class="font-display text-lg mb-5 txt-soft">
+            Computer Science &amp; Engineering ·
+            <span class="font-semibold" style="color: var(--primary)">TKM Institute of Technology</span>
+          </p>
+          <ul class="space-y-3 txt-soft mb-7">
+            <li class="flex gap-3">
+              <i class="fas fa-chalkboard mt-1" style="color: var(--primary)"></i>
+              <span>Teaches AI/ML, Python and data-structures labs — with a standing policy that no question is too basic, only too late.</span>
+            </li>
+            <li class="flex gap-3">
+              <i class="fas fa-microscope mt-1" style="color: var(--primary)"></i>
+              <span>Research in machine unlearning and SISA: how to make a trained model forget one contributor without burning the whole thing down.</span>
+            </li>
+            <li class="flex gap-3">
+              <i class="fas fa-robot mt-1" style="color: var(--primary)"></i>
+              <span>Guides student projects in educational robotics and healthcare AI, from first block diagram to defended report.</span>
+            </li>
+          </ul>
+          <a href="https://tkmit.ac.in/wp_department/computer-science-engineering/" target="_blank" rel="noopener"
+             class="btn-primary dept-link px-6 py-3 rounded-md font-display text-sm">
+            <i class="fas fa-building-columns"></i> Visit department page
+            <i class="fas fa-arrow-up-right-from-square text-xs opacity-80"></i>
+          </a>
+        </div>
+
+        <!-- for students -->
+        <div class="card card-hover rounded-2xl p-7 md:p-9 reveal" data-delay="120" data-tilt="4">
+          <p class="font-mono text-[11px] tracking-[0.25em] uppercase mb-2" style="color: var(--primary)">For students</p>
+          <h3 class="font-display text-2xl md:text-3xl font-bold mb-5">Office Hours</h3>
+
+          <div class="office-hours rounded-xl p-5 mb-5">
+            <div class="grid sm:grid-cols-2 gap-4 text-sm">
+              <div>
+                <div class="font-display text-xs font-bold uppercase tracking-widest txt-faint mb-1">When</div>
+                <div class="txt-soft font-medium">Mon – Fri · 3:30 – 4:30 pm</div>
+                <div class="txt-faint font-mono text-xs mt-1">or by appointment, always</div>
+              </div>
+              <div>
+                <div class="font-display text-xs font-bold uppercase tracking-widest mb-1 txt-faint">Where</div>
+                <div class="txt-soft font-medium">CSE Department · TKMIT</div>
+                <div class="txt-faint font-mono text-xs mt-1">the door with the robot on it</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="space-y-3 txt-soft text-sm mb-7">
+            <p class="flex gap-3"><i class="fas fa-circle-check mt-0.5" style="color: #166534"></i><span>Bring the question, not the panic. Half-formed is fine — that's what the hour is for.</span></p>
+            <p class="flex gap-3"><i class="fas fa-circle-check mt-0.5" style="color: #166534"></i><span>Project stuck, code broken, career undecided, or you just want to argue about transformers: all valid.</span></p>
+            <p class="flex gap-3"><i class="fas fa-envelope mt-0.5" style="color: var(--primary)"></i><span>Prefer email? <a href="mailto:abhisheksebinu@gmail.com" class="underline decoration-dotted font-medium hover:opacity-80">abhisheksebinu@gmail.com</a> — put your roll number in the subject.</span></p>
+          </div>
+
+          <div class="flex flex-wrap gap-3">
+            <a href="#contact" class="btn-ghost px-5 py-2.5 rounded-md font-display text-xs tracking-widest">BOOK A SLOT</a>
+            <button data-rush-open class="btn-ghost px-5 py-2.5 rounded-md font-display text-xs tracking-widest" title="The secret one">🎓 GRADE RUSH</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- research interests -->
+      <div class="card rounded-2xl mt-8 p-7 md:p-8 reveal">
+        <div class="flex items-center gap-3 mb-5">
+          <i class="fas fa-book-open-reader" style="color: var(--secondary)"></i>
+          <h3 class="font-display text-lg font-bold">Research Interests</h3>
+          <span class="hidden sm:inline font-mono text-[11px] txt-faint ml-auto">click one, I'll talk for an hour</span>
+        </div>
+        <div class="flex flex-wrap gap-3">
+          <span class="research-chip px-4 py-2 rounded-full text-sm font-semibold">Machine Unlearning</span>
+          <span class="research-chip px-4 py-2 rounded-full text-sm font-semibold">SISA / Selective Retraining</span>
+          <span class="research-chip px-4 py-2 rounded-full text-sm font-semibold">Computer Vision</span>
+          <span class="research-chip px-4 py-2 rounded-full text-sm font-semibold">Natural Language Processing</span>
+          <span class="research-chip px-4 py-2 rounded-full text-sm font-semibold">Educational Robotics</span>
+          <span class="research-chip px-4 py-2 rounded-full text-sm font-semibold">AI for Healthcare</span>
+          <span class="research-chip px-4 py-2 rounded-full text-sm font-semibold">Model Optimization</span>
+          <span class="research-chip px-4 py-2 rounded-full text-sm font-semibold">Privacy-Preserving ML</span>
+          <span class="research-chip px-4 py-2 rounded-full text-sm font-semibold">Teaching Machines to Forget</span>
+        </div>
       </div>
     </div>
   </section>
@@ -279,39 +408,54 @@
   <!-- ================= JOURNEY ================= -->
   <section id="journey" class="py-24 scroll-mt-16 relative z-10">
     <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-      <p class="kicker reveal">// 04 · journey</p>
+      <p class="kicker reveal">// 05 · journey</p>
       <h2 class="font-display text-3xl md:text-4xl font-bold mt-2 mb-12 text-glow reveal">The Story So Far</h2>
       <div class="timeline space-y-8 pl-10">
         <div class="relative reveal">
-          <span class="timeline-dot absolute -left-10 top-1.5 w-6 h-6 rounded-full border-2" style="border-color: var(--primary); background: #0a0a12"></span>
-          <div class="glass glass-hover rounded-2xl p-6">
+          <span class="timeline-dot absolute -left-10 top-1.5 w-6 h-6 rounded-full border-2" style="border-color: var(--primary); background: var(--panel)"></span>
+          <div class="card card-hover rounded-2xl p-6">
             <p class="font-mono text-xs tracking-[0.25em] mb-1" style="color: var(--primary)">CHAPTER 01 · HELLO, WORLD</p>
             <h3 class="font-display text-xl font-bold mb-2">The Spark ⚡</h3>
-            <p class="text-gray-400 font-medium">Fell headfirst into Python. First scripts, first bugs, first robots that mostly moved in the right direction.</p>
+            <p class="txt-soft">Fell headfirst into Python. First scripts, first bugs, first robots that mostly moved in the right direction.</p>
           </div>
         </div>
-        <div class="relative reveal" data-delay="80">
-          <span class="timeline-dot absolute -left-10 top-1.5 w-6 h-6 rounded-full border-2" style="border-color: var(--primary); background: #0a0a12"></span>
-          <div class="glass glass-hover rounded-2xl p-6">
+        <div class="relative reveal" data-delay="70">
+          <span class="timeline-dot absolute -left-10 top-1.5 w-6 h-6 rounded-full border-2" style="border-color: var(--primary); background: var(--panel)"></span>
+          <div class="card card-hover rounded-2xl p-6">
             <p class="font-mono text-xs tracking-[0.25em] mb-1" style="color: var(--primary)">CHAPTER 02 · THE GRIND</p>
             <h3 class="font-display text-xl font-bold mb-2">Sharpening the Stack 🛠️</h3>
-            <p class="text-gray-400 font-medium">C/C++, Flask &amp; Django, TensorFlow &amp; PyTorch — plus LaTeX, because real ones typeset their docs.</p>
+            <p class="txt-soft">C/C++, Flask &amp; Django, TensorFlow &amp; PyTorch — plus LaTeX, because real ones typeset their docs.</p>
           </div>
         </div>
-        <div class="relative reveal" data-delay="120">
-          <span class="timeline-dot absolute -left-10 top-1.5 w-6 h-6 rounded-full border-2" style="border-color: var(--secondary); background: #0a0a12"></span>
-          <div class="glass glass-hover rounded-2xl p-6">
+        <div class="relative reveal" data-delay="110">
+          <span class="timeline-dot absolute -left-10 top-1.5 w-6 h-6 rounded-full border-2" style="border-color: var(--secondary); background: var(--panel)"></span>
+          <div class="card card-hover rounded-2xl p-6">
             <p class="font-mono text-xs tracking-[0.25em] mb-1" style="color: var(--secondary)">CHAPTER 03 · THE BUILDS</p>
             <h3 class="font-display text-xl font-bold mb-2">Shipping Real Things 🚀</h3>
-            <p class="text-gray-400 font-medium">MEDIBOT for healthcare, the RFA classroom robot — theory meeting the real world, one deploy at a time.</p>
+            <p class="txt-soft">MEDIBOT for healthcare, the RFA classroom robot — theory meeting the real world, one deploy at a time.</p>
           </div>
         </div>
-        <div class="relative reveal" data-delay="160">
-          <span class="timeline-dot absolute -left-10 top-1.5 w-6 h-6 rounded-full border-2 animate-pulse" style="border-color: var(--secondary); background: var(--secondary)"></span>
-          <div class="glass glass-hover rounded-2xl p-6" style="border-color: var(--glass-border)">
-            <p class="font-mono text-xs tracking-[0.25em] mb-1" style="color: var(--secondary)">CHAPTER 04 · NOW · PG @ TKMCE</p>
-            <h3 class="font-display text-xl font-bold mb-2">The Deep End 🧠</h3>
-            <p class="text-gray-400 font-medium">Post-grad Computer Science at TKM College of Engineering. Currently researching machine unlearning &amp; SISA. To be continued…</p>
+        <div class="relative reveal" data-delay="150">
+          <span class="timeline-dot absolute -left-10 top-1.5 w-6 h-6 rounded-full border-2" style="border-color: var(--secondary); background: var(--panel)"></span>
+          <div class="card card-hover rounded-2xl p-6">
+            <p class="font-mono text-xs tracking-[0.25em] mb-1" style="color: var(--secondary)">CHAPTER 04 · THE DEEP END</p>
+            <h3 class="font-display text-xl font-bold mb-2">Post-Graduation 🧠</h3>
+            <p class="txt-soft">M.Tech Computer Science at TKM College of Engineering, researching machine unlearning &amp; SISA. Learned to defend a thesis and a merge request in the same week.</p>
+          </div>
+        </div>
+        <div class="relative reveal" data-delay="190">
+          <span class="timeline-dot absolute -left-10 top-1.5 w-6 h-6 rounded-full border-2 animate-pulse" style="border-color: var(--primary); background: var(--primary)"></span>
+          <div class="card card-hover rounded-2xl p-6" style="border-color: var(--glass-border)">
+            <p class="font-mono text-xs tracking-[0.25em] mb-1" style="color: var(--primary)">CHAPTER 05 · NOW @ TKMIT</p>
+            <h3 class="font-display text-xl font-bold mb-2">Assistant Professor 🎓</h3>
+            <p class="txt-soft">
+              Now on the other side of the desk at TKM Institute of Technology — teaching CSE, guiding projects,
+              and still sneaking research in between office hours. To be continued…
+            </p>
+            <a href="https://tkmit.ac.in/wp_department/computer-science-engineering/" target="_blank" rel="noopener"
+               class="inline-flex items-center gap-2 mt-4 font-mono text-xs tracking-widest uppercase hover:opacity-75" style="color: var(--primary)">
+              Department page <i class="fas fa-arrow-up-right-from-square"></i>
+            </a>
           </div>
         </div>
       </div>
@@ -321,50 +465,51 @@
   <!-- ================= PLAYGROUND ================= -->
   <section id="playground" class="py-24 scroll-mt-16 relative z-10">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <p class="kicker text-center reveal">// 05 · playground</p>
+      <p class="kicker text-center reveal">// 06 · playground</p>
       <h2 class="font-display text-3xl md:text-4xl font-bold mt-2 text-center text-glow reveal">The Playground</h2>
-      <p class="text-center text-gray-400 font-medium mt-3 mb-12 reveal">This is where the site stops being professional. Touch everything.</p>
+      <p class="text-center txt-soft mt-3 mb-12 reveal">This is where the lecture ends. Touch everything.</p>
 
       <div class="grid lg:grid-cols-5 gap-6">
-        <!-- terminal -->
-        <div class="lg:col-span-3 glass rounded-2xl overflow-hidden reveal term-window flex flex-col">
-          <div class="flex items-center gap-2 px-4 py-3 border-b border-white/10 bg-black/30">
+        <!-- terminal: always dark, in every mood -->
+        <div class="lg:col-span-3 term-window rounded-2xl overflow-hidden reveal flex flex-col">
+          <div class="term-bar flex items-center gap-2 px-4 py-3">
             <span class="w-3 h-3 rounded-full bg-red-500/80"></span>
             <span class="w-3 h-3 rounded-full bg-yellow-500/80"></span>
             <span class="w-3 h-3 rounded-full bg-green-500/80"></span>
-            <span class="ml-3 font-mono text-xs text-gray-500">visitor@nlanding: ~</span>
-            <span class="ml-auto font-mono text-[10px] text-gray-600 hidden sm:inline">try: help · game · party · theme spooky</span>
+            <span class="ml-3 font-mono text-xs term-dim">visitor@tkmit: ~</span>
+            <span class="ml-auto font-mono text-[10px] term-dim hidden sm:inline">try: help · tkmit · academia · rush · sudo grant tenure</span>
           </div>
           <div id="terminal" class="p-4 sm:p-5 text-[13px] sm:text-sm leading-relaxed">
-            <div id="term-output" class="term-output h-64 overflow-y-auto space-y-1 pr-1 text-gray-300"></div>
-            <form id="term-form" class="flex items-center gap-2 mt-3 pt-3 border-t border-white/10">
-              <span class="font-mono shrink-0"><span class="term-green">visitor@nlanding</span><span class="term-dim">:</span><span class="term-cyan">~</span><span class="term-dim">$</span></span>
-              <input id="term-input" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Terminal input" class="flex-1 min-w-0 text-white font-mono text-sm" placeholder="type help and hit enter…" />
+            <div id="term-output" class="term-output h-64 overflow-y-auto space-y-1 pr-1"></div>
+            <form id="term-form" class="flex items-center gap-2 mt-3 pt-3">
+              <span class="font-mono shrink-0"><span class="term-green">visitor@tkmit</span><span class="term-dim">:</span><span class="term-cyan">~</span><span class="term-dim">$</span></span>
+              <input id="term-input" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Terminal input" class="flex-1 min-w-0 font-mono text-sm" placeholder="type help and hit enter…" />
             </form>
           </div>
         </div>
 
         <!-- toy stack -->
         <div class="lg:col-span-2 flex flex-col gap-6">
-          <div class="glass glass-hover rounded-2xl p-5 reveal" data-delay="80">
+          <div class="card card-hover rounded-2xl p-5 reveal" data-delay="80">
             <h3 class="font-display text-sm font-bold tracking-widest mb-1">⚡ REFLEX CHECK</h3>
-            <p class="text-gray-500 text-sm font-medium mb-3">Click the box, wait for green, then SMASH it. Best: <span id="reflex-best" class="font-mono text-gray-300">—</span></p>
-            <div id="reflex-box" class="rounded-xl h-32 flex flex-col items-center justify-center text-center px-4 cursor-pointer bg-white/5 border border-white/10">
+            <p class="txt-faint text-sm mb-3">Click the box, wait for green, then SMASH it. Best: <span id="reflex-best" class="font-mono txt-soft">—</span></p>
+            <div id="reflex-box" class="rounded-xl h-32 flex flex-col items-center justify-center text-center px-4 cursor-pointer">
               <span id="reflex-label" class="font-display font-bold text-lg">click to start</span>
-              <span id="reflex-sub" class="text-sm text-gray-400 font-medium mt-1">how fast are those neurons?</span>
+              <span id="reflex-sub" class="text-sm mt-1 opacity-80">how fast are those neurons?</span>
             </div>
           </div>
 
-          <div class="glass glass-hover rounded-2xl p-5 reveal" data-delay="140">
-            <h3 class="font-display text-sm font-bold tracking-widest mb-1">👾 NEURAL JUMP 2.0</h3>
-            <p class="text-gray-500 text-sm font-medium mb-4">The secret platformer. 2 levels, lava, glory. (Also hidden behind my hero photo — 5 taps.)</p>
-            <button data-game-open class="btn-primary w-full py-3 rounded-md font-display text-xs tracking-widest">▶ &nbsp;JACK IN</button>
+          <div class="card card-hover rounded-2xl p-5 reveal" data-delay="140">
+            <h3 class="font-display text-sm font-bold tracking-widest mb-1">🎓 GRADE RUSH</h3>
+            <p class="txt-faint text-sm mb-1">The secret chalkboard game. Catch the A+, dodge the F, survive 60 seconds.</p>
+            <p class="txt-faint text-xs mb-4 font-mono">best: <span id="rush-best" class="txt-soft">—</span> · also hidden behind my polaroid (5 taps)</p>
+            <button data-rush-open class="btn-primary w-full py-3 rounded-md font-display text-xs tracking-widest">▶ &nbsp;TAKE THE ROUND</button>
           </div>
 
-          <div class="glass glass-hover rounded-2xl p-5 reveal" data-delay="200">
+          <div class="card card-hover rounded-2xl p-5 reveal" data-delay="200">
             <h3 class="font-display text-sm font-bold tracking-widest mb-1">⌨️ KONAMI ZONE</h3>
-            <p class="text-gray-500 text-sm font-medium mb-2">Type the sacred code anywhere on this page:</p>
-            <p class="font-mono text-sm text-gray-300 mb-2">↑ ↑ ↓ ↓ ← → ← → B A</p>
+            <p class="txt-faint text-sm mb-2">Type the sacred code anywhere on this page:</p>
+            <p class="font-mono text-sm txt-soft mb-2">↑ ↑ ↓ ↓ ← → ← → B A</p>
             <p id="konami-progress" class="font-mono text-lg tracking-[0.3em] mb-3" style="color: var(--primary)">░░░░░░░░░░</p>
             <div class="flex items-center gap-3">
               <button id="party-btn" class="btn-ghost flex-1 py-2.5 rounded-md font-display text-xs tracking-widest">🪩 PARTY ANYWAY</button>
@@ -374,117 +519,136 @@
       </div>
 
       <!-- mood row -->
-      <div class="glass rounded-2xl mt-6 p-5 flex flex-col sm:flex-row items-center justify-center gap-4 reveal">
-        <span class="font-mono text-sm text-gray-400">site mood:</span>
+      <div class="card rounded-2xl mt-6 p-5 flex flex-col sm:flex-row items-center justify-center gap-4 reveal">
+        <span class="font-mono text-sm txt-soft">site mood:</span>
         <div class="theme-switcher flex items-center gap-2.5"></div>
-        <span class="font-mono text-xs text-gray-600 hidden md:inline">(auto-follows the season until you pick one 😉)</span>
+        <span class="font-mono text-xs txt-faint hidden md:inline">(auto-follows the academic calendar until you pick one 😉)</span>
       </div>
     </div>
   </section>
 
   <!-- ================= CONTACT ================= -->
-  <section id="contact" class="py-24 scroll-mt-16 relative z-10 bg-black/40 border-t border-white/5">
+  <section id="contact" class="py-24 scroll-mt-16 relative z-10">
     <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-      <p class="kicker reveal">// 06 · contact</p>
-      <h2 class="font-display text-3xl md:text-5xl font-bold mt-2 mb-4 reveal">Let's Innovate <span class="gradient-text">Together</span></h2>
-      <p class="text-gray-400 mb-6 text-lg font-medium reveal">AI project? Robotics chaos? Unreasonably ambitious idea? My inbox is open.</p>
-      <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-green-500/40 bg-green-500/10 text-green-300 font-mono text-xs tracking-widest mb-10 reveal">
-        <span class="w-2 h-2 rounded-full bg-green-400 pulse-dot"></span> STATUS: OPEN TO COLLABS
+      <p class="kicker reveal">// 07 · contact</p>
+      <h2 class="font-display text-3xl md:text-5xl font-bold mt-2 mb-4 reveal">Office Hours Are <span class="gradient-text">Open</span></h2>
+      <p class="txt-soft mb-3 text-lg reveal">Research collaboration? A guest lecture? An unreasonably ambitious AI idea? My inbox is open.</p>
+      <p class="txt-faint text-sm mb-8 reveal font-mono">
+        students → course questions belong in the <a href="#academia" class="underline decoration-dotted hover-soft transition-colors">office-hours card</a>, everything else is fair game
+      </p>
+      <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full status-pill font-mono text-xs tracking-widest mb-10 reveal">
+        <span class="w-2 h-2 rounded-full bg-green-500 pulse-dot"></span> STATUS: OPEN TO COLLABS &amp; STUDENTS
       </div>
       <div class="flex flex-col sm:flex-row justify-center items-center gap-4 mb-10 reveal">
         <a href="mailto:abhisheksebinu@gmail.com" class="btn-primary px-8 py-3.5 rounded-md font-display text-sm"><i class="fas fa-paper-plane mr-2"></i>SAY HELLO</a>
         <button id="copy-email-btn" class="btn-ghost px-8 py-3.5 rounded-md font-display text-sm"><i class="fas fa-copy mr-2"></i>COPY EMAIL</button>
       </div>
       <div class="flex justify-center gap-5 mb-12 reveal">
-        <a href="mailto:abhisheksebinu@gmail.com" aria-label="Email" class="w-14 h-14 glass glass-hover rounded-full flex items-center justify-center text-xl"><i class="fas fa-envelope"></i></a>
-        <a href="https://www.linkedin.com/in/abhishekofficial2427/" target="_blank" rel="noopener" aria-label="LinkedIn" class="w-14 h-14 glass glass-hover rounded-full flex items-center justify-center text-xl"><i class="fab fa-linkedin-in"></i></a>
-        <a href="https://github.com/theunknownadorable" target="_blank" rel="noopener" aria-label="GitHub" class="w-14 h-14 glass glass-hover rounded-full flex items-center justify-center text-xl"><i class="fab fa-github"></i></a>
+        <a href="mailto:abhisheksebinu@gmail.com" aria-label="Email" class="social-btn w-14 h-14 card card-hover rounded-full flex items-center justify-center text-xl"><i class="fas fa-envelope"></i></a>
+        <a href="https://www.linkedin.com/in/abhishekofficial2427/" target="_blank" rel="noopener" aria-label="LinkedIn" class="social-btn w-14 h-14 card card-hover rounded-full flex items-center justify-center text-xl"><i class="fab fa-linkedin-in"></i></a>
+        <a href="https://github.com/theunknownadorable" target="_blank" rel="noopener" aria-label="GitHub" class="social-btn w-14 h-14 card card-hover rounded-full flex items-center justify-center text-xl"><i class="fab fa-github"></i></a>
+        <a href="https://tkmit.ac.in/wp_department/computer-science-engineering/" target="_blank" rel="noopener" aria-label="TKMIT department" class="social-btn w-14 h-14 card card-hover rounded-full flex items-center justify-center text-xl"><i class="fas fa-building-columns"></i></a>
       </div>
-      <footer class="text-gray-600 text-sm font-mono border-t border-white/10 pt-8 space-y-2">
-        <p>© <span id="year">2026</span> Abhishek S. · nlanding v2.0 · forged with caffeine &amp; curiosity</p>
-        <p>currently vibing in <span id="theme-name-foot" class="text-gray-400">Cyberpunk</span> mode · <a href="#home" class="hover:text-white underline decoration-dotted">back to top ↑</a></p>
+      <footer class="site-foot text-sm font-mono pt-8 space-y-2">
+        <p>© <span id="year">2026</span> Abhishek S. · nlanding v2.1 “professor era” · set in Fraunces &amp; Inter</p>
+        <p>
+          Assistant Professor, CSE ·
+          <a href="https://tkmit.ac.in/wp_department/computer-science-engineering/" target="_blank" rel="noopener" class="underline decoration-dotted">TKM Institute of Technology</a>
+        </p>
+        <p>currently in <span id="theme-name-foot" class="txt-soft">Scholar</span> mode · <a href="#home" class="underline decoration-dotted">back to top ↑</a></p>
       </footer>
     </div>
   </section>
 
   <!-- ================= NPC ================= -->
   <div id="npc-container" class="fixed bottom-0 right-4 z-40 peek cursor-pointer">
-    <div id="npc-dialog" class="absolute bottom-[104px] right-0 w-72 bg-black/90 border-2 p-4 rounded-xl hidden glass chat-bubble" style="border-color: var(--primary)">
-      <p id="npc-text" class="text-sm text-gray-200 mb-3 font-mono leading-relaxed min-h-[40px]"></p>
+    <div id="npc-dialog" class="absolute bottom-[104px] right-0 w-72 p-4 rounded-xl hidden chat-bubble">
+      <p class="font-mono text-[10px] tracking-[0.2em] uppercase mb-2 txt-faint">Glitch · TA-bot</p>
+      <p id="npc-text" class="text-sm mb-3 font-mono leading-relaxed min-h-[40px]"></p>
       <div id="npc-options" class="flex flex-wrap gap-2 justify-end"></div>
     </div>
-    <div id="npc-body" class="relative text-7xl animate-bounce" style="animation-duration: 2.2s; color: var(--primary); filter: drop-shadow(0 0 14px rgba(var(--primary-rgb), .6));">
+    <div id="npc-body" class="relative text-7xl animate-bounce" style="animation-duration: 2.4s; color: var(--primary);" title="Glitch, the TA-bot">
       <i class="fas fa-robot"></i>
-      <div class="absolute -top-1 right-1 w-3 h-3 bg-red-500 rounded-full animate-ping"></div>
+      <span class="absolute -top-2 -right-2 text-2xl">🎓</span>
+      <div class="absolute -top-1 right-6 w-3 h-3 bg-red-500 rounded-full animate-ping"></div>
     </div>
   </div>
 
   <!-- ================= COMMAND PALETTE ================= -->
   <div id="palette-overlay" class="hidden fixed inset-0 z-[110] justify-center items-start pt-[12vh] px-4">
-    <div class="w-full max-w-xl glass rounded-2xl overflow-hidden" style="background: rgba(8,8,16,.92); border-color: var(--glass-border); box-shadow: 0 0 40px var(--glass-shadow);">
-      <div class="flex items-center gap-3 px-4 py-3.5 border-b border-white/10">
+    <div id="palette-panel" class="w-full max-w-xl rounded-2xl overflow-hidden">
+      <div class="pal-head flex items-center gap-3 px-4 py-3.5 border-b">
         <i class="fas fa-terminal text-sm" style="color: var(--primary)"></i>
-        <input id="palette-input" type="text" autocomplete="off" spellcheck="false" placeholder="Type a command… (themes, games, teleportation)" aria-label="Command palette" class="flex-1 min-w-0 bg-transparent outline-none border-none font-body font-semibold text-lg placeholder:text-gray-600" />
-        <kbd class="font-mono text-[10px] px-1.5 py-0.5 rounded bg-white/10 text-gray-400">esc</kbd>
+        <input id="palette-input" type="text" autocomplete="off" spellcheck="false" placeholder="Type a command… (moods, games, teleportation)" aria-label="Command palette" class="flex-1 min-w-0 bg-transparent outline-none border-none font-body font-semibold text-lg" />
+        <kbd class="pal-kbd font-mono text-[10px] px-1.5 py-0.5 rounded">esc</kbd>
       </div>
       <div id="palette-list" class="max-h-[46vh] overflow-y-auto p-2"></div>
-      <div class="px-4 py-2.5 border-t border-white/10 font-mono text-[11px] text-gray-500 flex gap-4">
+      <div class="pal-foot px-4 py-2.5 border-t font-mono text-[11px] txt-faint flex gap-4">
         <span>↑↓ navigate</span><span>↵ run</span><span>ctrl K toggle</span>
       </div>
     </div>
   </div>
 
-  <!-- ================= GAME MODAL ================= -->
-  <div id="game-modal" class="fixed inset-0 z-[100] hidden items-center justify-center flex-col p-4 overflow-hidden">
-    <div class="scanline"></div>
-    <div class="w-full max-w-xl flex items-end justify-between mb-2">
+  <!-- ================= GRADE RUSH MODAL ================= -->
+  <div id="rush-modal" class="fixed inset-0 z-[100] hidden items-center justify-center flex-col p-4 overflow-y-auto">
+    <div class="w-full max-w-[540px] flex items-end justify-between mb-3">
       <div>
-        <h2 class="font-display text-2xl font-black text-white tracking-wider">NEURAL <span class="gradient-text">JUMP</span> 2.0</h2>
-        <p class="font-mono text-xs text-gray-400">level <span id="level-indicator">1/2</span> · ⏱ <span id="hud-time">0:00.0</span> · 💀 <span id="hud-deaths">0</span></p>
+        <h2 class="font-display text-2xl font-black chalk-title tracking-wide">GRADE RUSH</h2>
+        <p class="rush-hud text-xs opacity-80">catch A+ · ★ · ☕ &nbsp;—&nbsp; dodge F and ⏰ &nbsp;—&nbsp; 60 seconds, 3 apples</p>
       </div>
-      <button data-game-close aria-label="Close game" class="text-gray-400 hover:text-red-400 text-2xl p-2 transition-colors"><i class="fas fa-times"></i></button>
+      <button data-rush-close aria-label="Close Grade Rush" class="text-white/60 hover:text-red-400 text-2xl p-2 transition-colors"><i class="fas fa-times"></i></button>
     </div>
-    <div class="relative p-1.5 glass rounded-xl w-full max-w-xl" style="border-color: var(--glass-border)">
-      <canvas id="game-canvas" class="rounded-lg block w-full h-auto bg-black/80"></canvas>
-      <div id="win-screen" class="absolute inset-1.5 bg-black/95 hidden flex-col items-center justify-center p-6 text-center rounded-lg overflow-y-auto">
-        <h3 class="text-yellow-300 font-display text-2xl sm:text-3xl font-black mb-2">SYSTEM HACKED! 🎉</h3>
-        <p id="win-stats" class="font-mono text-xs text-gray-300 mb-4">TIME — · DEATHS —</p>
-        <div class="w-40 h-40 sm:w-48 sm:h-48 rounded-xl border-2 overflow-hidden mb-3" style="border-color: var(--primary)">
-          <img src="./mona.jpg" alt="Classified reward" class="w-full h-full object-cover" />
+
+    <div class="chalk-frame w-full max-w-[540px]">
+      <div class="chalk-board relative">
+        <canvas id="rush-canvas" width="480" height="300" aria-label="Grade Rush game board"></canvas>
+
+        <!-- ready -->
+        <div id="rush-ready" class="rush-overlay absolute inset-0 flex-col items-center justify-center p-6 text-center">
+          <h3 class="font-display text-2xl font-black chalk-title mb-2">🎓 GRADE RUSH</h3>
+          <p class="font-mono text-xs text-white/70 mb-4 max-w-sm leading-relaxed">
+            Slide the mortarboard. Catch <span class="term-green">A+ (+10)</span>,
+            <span class="chalk-title">★ (+25)</span> and <span class="text-white">☕ (+15)</span>.
+            Dodge <span class="term-red">F</span> papers and <span class="term-red">⏰</span> deadlines —
+            each one costs an apple. Survive 60 seconds.
+          </p>
+          <p class="font-mono text-[11px] text-white/50 mb-5">mouse / drag · ← → or A D</p>
+          <button id="rush-start" class="rush-btn px-7 py-3 font-display text-sm tracking-widest">▶ &nbsp;BEGIN THE TERM</button>
         </div>
-        <p class="font-mono text-[11px] text-gray-500 mb-4">reward unlocked: one (1) classified photograph</p>
-        <div class="flex gap-3">
-          <button id="win-again-btn" class="btn-primary px-5 py-2.5 rounded-md font-display text-xs">PLAY AGAIN</button>
-          <button data-game-close class="btn-ghost px-5 py-2.5 rounded-md font-display text-xs">EXIT</button>
+
+        <!-- results -->
+        <div id="rush-over" class="rush-overlay absolute inset-0 hidden flex-col items-center justify-center p-6 text-center">
+          <h3 id="rush-over-title" class="font-display text-2xl font-black chalk-title mb-1">TERM COMPLETE</h3>
+          <p id="rush-over-rank" class="font-display text-xl font-bold text-white mb-1">—</p>
+          <p id="rush-over-note" class="font-mono text-[11px] text-white/60 mb-3">—</p>
+          <p id="rush-over-stats" class="rush-hud text-xs mb-5">—</p>
+          <div class="flex flex-wrap gap-3 justify-center">
+            <button id="rush-again" class="rush-btn px-6 py-2.5 font-display text-xs tracking-widest">PLAY AGAIN</button>
+            <button data-rush-close class="rush-btn-ghost px-6 py-2.5 font-display text-xs tracking-widest">LEAVE CLASS</button>
+          </div>
         </div>
       </div>
-      <div id="game-over" class="absolute inset-1.5 bg-black/90 hidden flex-col items-center justify-center rounded-lg">
-        <h3 class="text-red-500 font-display text-3xl font-black mb-1">CONNECTION LOST</h3>
-        <p class="font-mono text-xs text-gray-500 mb-5">the lava sends its regards</p>
-        <div class="flex gap-3">
-          <button id="retry-btn" class="btn-primary px-6 py-2.5 rounded-md font-display text-xs">RETRY LEVEL</button>
-          <button data-game-close class="btn-ghost px-6 py-2.5 rounded-md font-display text-xs">RAGE QUIT</button>
-        </div>
-      </div>
+      <div class="chalk-tray"></div>
     </div>
-    <div class="mt-4 w-full max-w-xl flex items-center justify-between">
-      <p class="text-gray-500 font-mono text-xs hidden md:block">← → / A D move · ↑ / W / space jump</p>
-      <p class="text-gray-500 font-mono text-xs md:hidden">use the buttons. you got this.</p>
-      <button data-game-close class="md:hidden font-mono text-xs text-gray-500 underline">quit</button>
+
+    <div class="mt-4 w-full max-w-[540px] flex items-center justify-between">
+      <p class="rush-hud text-xs opacity-70 hidden md:block">← → / A D move · space start · esc quit</p>
+      <p class="rush-hud text-xs opacity-70 md:hidden">drag on the board, or use the buttons.</p>
+      <button data-rush-close class="md:hidden rush-hud text-xs underline opacity-70">quit</button>
     </div>
-    <div class="flex gap-4 w-full max-w-xl justify-between md:hidden mt-2">
+    <div class="flex gap-4 w-full max-w-[540px] justify-between md:hidden mt-2">
       <div class="flex gap-3">
-        <button class="touch-btn" id="btn-left" aria-label="Move left"><i class="fas fa-chevron-left"></i></button>
-        <button class="touch-btn" id="btn-right" aria-label="Move right"><i class="fas fa-chevron-right"></i></button>
+        <button class="touch-btn" id="rush-left" aria-label="Move left"><i class="fas fa-chevron-left"></i></button>
+        <button class="touch-btn" id="rush-right" aria-label="Move right"><i class="fas fa-chevron-right"></i></button>
       </div>
-      <button class="touch-btn" id="btn-jump" aria-label="Jump"><i class="fas fa-arrow-up"></i></button>
+      <span class="text-3xl self-center" aria-hidden="true">🍎🍎🍎</span>
     </div>
   </div>
 
   <!-- toasts + back-to-top -->
   <div id="toast-container"></div>
-  <button id="to-top" aria-label="Back to top" class="fixed bottom-24 left-4 z-40 w-11 h-11 glass rounded-full flex items-center justify-center hover:border-white/40">
-    <i class="fas fa-arrow-up text-sm" style="color: var(--primary)"></i>
+  <button id="to-top" aria-label="Back to top" class="fixed bottom-24 left-4 z-40 w-11 h-11 card rounded-full flex items-center justify-center">
+    <i class="fas fa-arrow-up text-sm"></i>
   </button>
 
   <script type="module" src="/src/main.js"></script>

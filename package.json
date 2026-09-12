@@ -1,9 +1,9 @@
 {
   "name": "nlanding",
   "private": true,
-  "version": "2.0.0",
+  "version": "2.1.0",
   "type": "module",
-  "description": "Abhishek S. — AI/ML landing page v2. Neon, playful, interactive. Built with Vite + Tailwind.",
+  "description": "Abhishek S. — Assistant Professor, CSE @ TKMIT. Landing page v2.1 “professor era”: light-first academic Scholar theme, six moods, fluid canvas background, Academia section, and a secret chalkboard game called Grade Rush. Built with Vite + Tailwind.",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
